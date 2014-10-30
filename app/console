@@ -1,5 +1,10 @@
-#!/usr/bin/env php
 <?php
+/**
+ * Stats Gathering Application
+ *
+ * @copyright  Copyright (C) 2014 WebSpark, Inc. All rights reserved.
+ * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
+ */
 
 // if you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
@@ -7,21 +12,21 @@
 
 set_time_limit(0);
 
-require_once __DIR__.'/bootstrap.php.cache';
-require_once __DIR__.'/AppKernel.php';
+require_once __DIR__ . '/bootstrap.php.cache';
+require_once __DIR__ . '/AppKernel.php';
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 
 $input = new ArgvInput();
-$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
+$env   = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
 $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
 
 if ($debug) {
     Debug::enable();
 }
 
-$kernel = new AppKernel($env, $debug);
+$kernel      = new AppKernel($env, $debug);
 $application = new Application($kernel);
 $application->run($input);

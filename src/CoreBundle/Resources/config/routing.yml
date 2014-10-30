@@ -1,0 +1,3 @@
+stats_app_charts_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: StatsAppChartsBundle:Default:index }

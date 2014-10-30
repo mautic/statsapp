@@ -1,0 +1,4 @@
+stats_app_charts:
+    resource: "@StatsAppChartsBundle/Resources/config/routing.yml"
+    prefix:   /
+

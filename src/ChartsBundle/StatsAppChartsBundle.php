@@ -6,10 +6,13 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-require_once __DIR__.'/AppKernel.php';
+namespace StatsApp\ChartsBundle;
 
-use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AppCache extends HttpCache
+/**
+ * Class StatsAppChartsBundle
+ */
+class StatsAppChartsBundle extends Bundle
 {
 }
