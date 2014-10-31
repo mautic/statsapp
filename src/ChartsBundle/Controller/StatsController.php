@@ -23,7 +23,6 @@ class StatsController extends BaseController
     public function sendAction()
     {
         $data = array();
-        $code = 200;
 
         // Only authorize POST requests
         if ($this->request->getMethod() != 'POST') {
@@ -50,7 +49,27 @@ class StatsController extends BaseController
             return $this->sendJsonResponse($data, 500);
         }
 
-        // TODO - Build model and entity infrastructure to save data
+        /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
+        $model = $this->factory->getModel('charts.stats');
+
+        $entity = $model->getEntity();
+
+        // Loop over the post data and set it to the entity
+        foreach ($postData as $key => $value) {
+            $method = 'set' . ucwords($key);
+            $entity->$method = $value;
+        }
+
+        // Save the data
+        try {
+            $model->saveEntity($entity);
+
+            $data['message'] = 'Data saved successfully';
+            $code            = 200;
+        } catch (\Exception $exception) {
+            $data['message'] = 'An error occurred while saving the data';
+            $code            = 500;
+        }
 
         return $this->sendJsonResponse($data, $code);
     }

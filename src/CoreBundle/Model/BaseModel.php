@@ -9,12 +9,11 @@
 namespace StatsApp\CoreBundle\Model;
 
 use StatsApp\Factory;
-use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 /**
  * Class BaseModel
  */
-class BaseModel
+abstract class BaseModel
 {
 
     /**
@@ -37,26 +36,33 @@ class BaseModel
     }
 
     /**
+     * Get a specific entity
+     *
+     * @param $id
+     *
+     * @return null|object
+     */
+    public function getEntity($id = null)
+    {
+        if (null !== $id) {
+            $repo = $this->getRepository();
+
+            if (method_exists($repo, 'getEntity')) {
+                return $repo->getEntity($id);
+            }
+
+            return $repo->find($id);
+        }
+
+        return null;
+    }
+
+    /**
      * Retrieves an entity repository
      *
      * @return \StatsApp\CoreBundle\Entity\BaseRepository
-     * @throws NotAcceptableHttpException
      */
-    public function getRepository()
-    {
-        // Shortcut for repositories with same name as bundle
-        if (strpos($name, '.') === false) {
-            $name = "$name.$name";
-        }
-
-        $parts = explode('.', $name);
-
-        if (count($parts) !== 2) {
-            throw new NotAcceptableHttpException($name . ' is not an acceptable repository name.');
-        }
-
-        return $this->em->getRepository('StatsApp' . $parts[0] . 'Bundle:' . $parts[1]);
-    }
+    abstract public function getRepository();
 
     /**
      * Return list of entities
