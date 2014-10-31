@@ -30,6 +30,16 @@ class Factory
     }
 
     /**
+     * Retrieves Doctrine EntityManager
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->container->get('doctrine')->getManager();
+    }
+
+    /**
      * Retrieves the specified model object
      *
      * @param $name
