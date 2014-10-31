@@ -1,4 +1,10 @@
 services:
-#    stats_app_core.example:
-#        class: StatsApp\CoreBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    stats_app.factory:
+        class: StatsApp\Factory
+        arguments: [@service_container]
+
+    kernel.listener.stats_app_core_listener:
+        class: StatsApp\CoreBundle\EventListener\CoreListener
+        arguments: [@stats_app.factory]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

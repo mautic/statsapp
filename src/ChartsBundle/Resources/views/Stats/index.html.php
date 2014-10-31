@@ -8,4 +8,4 @@
 
 $view->extend('StatsAppCoreBundle:Base:index.html.php') ?>
 
-<h1>Hello <?php echo $name; ?>!</h1>
+<h1>Hello World!</h1>

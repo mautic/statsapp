@@ -1,3 +1,7 @@
-stats_app_charts_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: StatsAppChartsBundle:Default:index }
+stats_app_index:
+    path:     /
+    defaults: { _controller: StatsAppChartsBundle:Stats:view }
+
+stats_app_post:
+    path:     /send
+    defaults: { _controller: StatsAppChartsBundle:Stats:send }
