@@ -8,7 +8,20 @@
 
 $view->extend('StatsAppCoreBundle:Base:index.html.php') ?>
 
-<h1>Hello World!</h1>
-<?php if (isset($application)) : ?>
-<h2>Stats for <?php echo ucfirst($application); ?></h2>
-<?php endif; ?>
+<h1>Application Statistics</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Application</th>
+            <th># of Installations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($applications as $application) : ?>
+            <tr>
+                <td><?php echo $application['name']; ?></td>
+                <td><?php echo $application['installs']; ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

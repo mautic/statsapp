@@ -18,19 +18,20 @@ class StatsModel extends BaseModel
 {
 
     /**
-     * {@inheritdoc}
+     * Get a specific entity
+     *
      *
      * @return Stats
      */
-    public function getEntity($id = null)
+    public function getEntity($instanceId = null, $application = null)
     {
-        if ($id === null) {
+        if ($instanceId === null && $application === null) {
             return new Stats();
         }
 
         $repo = $this->getRepository();
 
-        $entity = $repo->findOneBy(['instanceId' => $id]);
+        $entity = $repo->findOneBy(['instanceId' => $instanceId, 'application' => $application]);
 
         return ($entity === null) ? new Stats() : $entity;
     }

@@ -36,28 +36,6 @@ abstract class BaseModel
     }
 
     /**
-     * Get a specific entity
-     *
-     * @param $id
-     *
-     * @return null|object
-     */
-    public function getEntity($id = null)
-    {
-        if (null !== $id) {
-            $repo = $this->getRepository();
-
-            if (method_exists($repo, 'getEntity')) {
-                return $repo->getEntity($id);
-            }
-
-            return $repo->find($id);
-        }
-
-        return null;
-    }
-
-    /**
      * Retrieves an entity repository
      *
      * @return \StatsApp\CoreBundle\Entity\BaseRepository

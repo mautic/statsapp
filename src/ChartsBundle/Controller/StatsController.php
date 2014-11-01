@@ -56,7 +56,7 @@ class StatsController extends BaseController
         /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
         $model = $this->factory->getModel('charts.stats');
 
-        $entity = $model->getEntity($postData['instanceId']);
+        $entity = $model->getEntity($postData['instanceId'], $postData['application']);
 
         // Loop over the post data and set it to the entity
         foreach ($postData as $key => $value) {
@@ -85,6 +85,13 @@ class StatsController extends BaseController
      */
     public function viewAction()
     {
-        return $this->render('StatsAppChartsBundle:Stats:index.html.php');
+        /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
+        $model = $this->factory->getModel('charts.stats');
+        $repo  = $model->getRepository();
+        $apps  = $repo->getAppList();
+
+        return $this->render('StatsAppChartsBundle:Stats:index.html.php', array(
+            'applications' => $apps
+        ));
     }
 }
