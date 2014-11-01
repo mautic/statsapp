@@ -9,3 +9,6 @@
 $view->extend('StatsAppCoreBundle:Base:index.html.php') ?>
 
 <h1>Hello World!</h1>
+<?php if (isset($application)) : ?>
+<h2>Stats for <?php echo ucfirst($application); ?></h2>
+<?php endif; ?>

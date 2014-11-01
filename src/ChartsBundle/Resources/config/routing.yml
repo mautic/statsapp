@@ -5,3 +5,8 @@ stats_app_index:
 stats_app_post:
     path:     /send
     defaults: { _controller: StatsAppChartsBundle:Stats:send }
+    methods:  [POST]
+
+stats_app_application_stats:
+    path:     /application/{app}
+    defaults: { _controller: StatsAppChartsBundle:Stats:app }

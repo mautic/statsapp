@@ -15,6 +15,17 @@ use StatsApp\CoreBundle\Controller\BaseController;
  */
 class StatsController extends BaseController
 {
+
+    /**
+     * Displays the stats data for a specific application
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function appAction($application)
+    {
+        return $this->render('StatsAppChartsBundle:Stats:index.html.php', array('application' => $application));
+    }
+
     /**
      * Receives the POSTed data from downstream applications
      *
@@ -23,13 +34,6 @@ class StatsController extends BaseController
     public function sendAction()
     {
         $data = array();
-
-        // Only authorize POST requests
-        if ($this->request->getMethod() != 'POST') {
-            $data['message'] = 'Only POST requests are allowed';
-
-            return $this->sendJsonResponse($data, 500);
-        }
 
         // Fetch our data from the POST
         $postData = [
