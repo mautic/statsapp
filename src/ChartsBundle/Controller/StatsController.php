@@ -19,11 +19,63 @@ class StatsController extends BaseController
     /**
      * Displays the stats data for a specific application
      *
+     * @param string $app
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function appAction($application)
+    public function appAction($app)
     {
-        return $this->render('StatsAppChartsBundle:Stats:index.html.php', array('application' => $application));
+        // Check if the application is supported
+        $supported = $this->factory->getParameter('supported_applications');
+
+        if (!in_array($app, $supported)) {
+            $this->createNotFoundException(sprintf('The %s application is not supported.', $app));
+        }
+
+        /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
+        $model   = $this->factory->getModel('charts.stats');
+        $repo    = $model->getRepository();
+        $appData = $repo->getAppData($app);
+
+        if (empty($appData)) {
+            $this->createNotFoundException(sprintf('No data was found for the %s application.', $app));
+        }
+
+        $chartData = [
+            'phpVersion' => [],
+            'dbDriver' => [],
+            'dbVersion' => [],
+            'version' => [],
+            'serverOs' => []
+        ];
+
+        foreach ($appData as $item) {
+            foreach ($chartData as $key => $value) {
+                if (!isset($chartData[$key][$item[$key]])) {
+                    $chartData[$key][$item[$key]] = 0;
+                }
+
+                $chartData[$key][$item[$key]]++;
+            }
+        }
+
+        $data = [];
+
+        foreach ($chartData as $key => $value) {
+            foreach ($value as $name => $count) {
+                $data[$key][] = [
+                    'name'  => $name,
+                    'count' => $count
+                ];
+            }
+        }
+
+        $data['total'] = count($appData);
+
+        return $this->render('StatsAppChartsBundle:Stats:data.html.php', [
+            'application' => $app,
+            'data'        => $data
+        ]);
     }
 
     /**
@@ -33,7 +85,7 @@ class StatsController extends BaseController
      */
     public function sendAction()
     {
-        $data = array();
+        $data = [];
 
         // Fetch our data from the POST
         $postData = [
@@ -49,6 +101,15 @@ class StatsController extends BaseController
         // Check for null values on the app, version, and instance; everything else we can do without
         if ($postData['application'] === null || $postData['version'] === null || $postData['instanceId'] === null) {
             $data['message'] = 'Missing data from the POST request';
+
+            return $this->sendJsonResponse($data, 500);
+        }
+
+        // Check if the application is supported
+        $supported = $this->factory->getParameter('supported_applications');
+
+        if (!in_array($postData['application'], $supported)) {
+            $data['message'] = sprintf('The %s application is not supported');
 
             return $this->sendJsonResponse($data, 500);
         }
@@ -90,8 +151,8 @@ class StatsController extends BaseController
         $repo  = $model->getRepository();
         $apps  = $repo->getAppList();
 
-        return $this->render('StatsAppChartsBundle:Stats:index.html.php', array(
+        return $this->render('StatsAppChartsBundle:Stats:index.html.php', [
             'applications' => $apps
-        ));
+        ]);
     }
 }

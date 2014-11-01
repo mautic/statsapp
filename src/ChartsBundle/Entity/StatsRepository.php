@@ -16,6 +16,21 @@ use StatsApp\CoreBundle\Entity\BaseRepository;
 class StatsRepository extends BaseRepository
 {
     /**
+     * Retrieves all installation data for a given application
+     *
+     * @return array
+     */
+    public function getAppData($application)
+    {
+        $query = $this->createQueryBuilder($this->getTableAlias());
+        $query->select('s')
+            ->where($query->expr()->eq('s.application', ':application'))
+            ->setParameter('application', $application);
+
+        return $query->getQuery()->getArrayResult();
+    }
+
+    /**
      * Retrieves a list of applications and the number of installs in each
      *
      * @return array

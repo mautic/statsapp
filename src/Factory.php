@@ -40,6 +40,16 @@ class Factory
     }
 
     /**
+     * Get the current environment
+     *
+     * @return string
+     */
+    public function getEnvironment()
+    {
+        return $this->container->getParameter('kernel.environment');
+    }
+
+    /**
      * Retrieves the specified model object
      *
      * @param $name
@@ -79,12 +89,12 @@ class Factory
     }
 
     /**
-     * Get the current environment
+     * Get a parameter from the container
      *
      * @return string
      */
-    public function getEnvironment()
+    public function getParameter($key)
     {
-        return $this->container->getParameter('kernel.environment');
+        return $this->container->getParameter('supported_applications');
     }
 }
