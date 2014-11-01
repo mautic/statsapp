@@ -31,7 +31,7 @@ class Stats
     /**
      * @var string
      *
-     * @ORM\Column(name="unique_id", type="text")
+     * @ORM\Column(name="instance_id", type="text")
      */
     private $instanceId;
 

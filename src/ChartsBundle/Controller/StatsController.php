@@ -52,12 +52,12 @@ class StatsController extends BaseController
         /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
         $model = $this->factory->getModel('charts.stats');
 
-        $entity = $model->getEntity();
+        $entity = $model->getEntity($postData['instanceId']);
 
         // Loop over the post data and set it to the entity
         foreach ($postData as $key => $value) {
             $method = 'set' . ucwords($key);
-            $entity->$method = $value;
+            $entity->$method($value);
         }
 
         // Save the data

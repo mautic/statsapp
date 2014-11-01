@@ -20,7 +20,7 @@ class StatsModel extends BaseModel
     /**
      * {@inheritdoc}
      *
-     * @return Stats|null
+     * @return Stats
      */
     public function getEntity($id = null)
     {
@@ -28,7 +28,11 @@ class StatsModel extends BaseModel
             return new Stats();
         }
 
-        return parent::getEntity($id);
+        $repo = $this->getRepository();
+
+        $entity = $repo->findOneBy(['instanceId' => $id]);
+
+        return ($entity === null) ? new Stats() : $entity;
     }
 
     /**
