@@ -13,7 +13,7 @@ framework:
     csrf_protection: ~
     validation:      { enable_annotations: true }
     templating:
-        engines: ['php', 'twig']
+        engines: ['php']
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_hosts:   ~
@@ -23,11 +23,6 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
-
-# Twig Configuration
-twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
 
 # Doctrine Configuration
 doctrine:
