@@ -102,11 +102,13 @@ class StatsController extends BaseController
 
         foreach ($appData as $item) {
             foreach ($chartData as $key => $value) {
-                if (!isset($chartData[$key][$item[$key]])) {
-                    $chartData[$key][$item[$key]] = 0;
-                }
+                if (!is_null($item[$key])) {
+                    if (!isset($chartData[$key][$item[$key]])) {
+                        $chartData[$key][$item[$key]] = 0;
+                    }
 
-                $chartData[$key][$item[$key]]++;
+                    $chartData[$key][$item[$key]]++;
+                }
             }
         }
 
@@ -114,10 +116,12 @@ class StatsController extends BaseController
 
         foreach ($chartData as $key => $value) {
             foreach ($value as $name => $count) {
-                $data[$key][] = [
-                    'name'  => $name,
-                    'count' => $count
-                ];
+                if ($name) {
+                    $data[$key][] = [
+                        'name'  => $name,
+                        'count' => $count
+                    ];
+                }
             }
         }
 

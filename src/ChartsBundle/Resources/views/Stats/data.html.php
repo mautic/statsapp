@@ -9,4 +9,49 @@
 $view->extend('StatsAppCoreBundle:Base:index.html.php') ?>
 
 <h1>Application Statistics for <?php echo $application; ?></h1>
-<pre><?php print_r($data); ?></pre>
+
+<div class="row-fluid">
+	<canvas id="appVersions" width="400" height="400"></canvas>
+    <div id="appVersions" class="span6" style="min-height:400px"></div>
+    <div id="phpVersions" class="span6" style="min-height:400px"></div>
+</div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+        var appChart = new CanvasJS.Chart("appVersions", {
+            title: {
+                text: "Installed Mautic Versions"
+            },
+            data: [{
+                type: "doughnut",
+                dataPoints: [
+                    <?php foreach ($data['version'] as $point) : ?>
+                    {
+                        y: <?php echo $point['count']; ?>,
+                        indexLabel: '<?php echo $point['name']; ?>'
+                    },
+                    <?php endforeach; ?>
+                ]
+            }]
+        });
+        appChart.render();
+
+        var phpChart = new CanvasJS.Chart("phpVersions", {
+            title: {
+                text: "PHP Versions"
+            },
+            data: [{
+                type: "doughnut",
+                dataPoints: [
+	                <?php foreach ($data['phpVersion'] as $point) : ?>
+                    {
+	                    y: <?php echo $point['count']; ?>,
+                        indexLabel: '<?php echo $point['name']; ?>'
+                    },
+                    <?php endforeach; ?>
+                ]
+            }]
+        });
+        phpChart.render();
+    });
+</script>
