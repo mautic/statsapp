@@ -46,4 +46,4 @@ doctrine:
         auto_mapping: true
 
 parameters:
-    supported_applications: ['Cobalt', 'Mautic']
+    supported_applications: ['Mautic']

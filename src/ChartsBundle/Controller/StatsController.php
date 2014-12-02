@@ -15,69 +15,6 @@ use StatsApp\CoreBundle\Controller\BaseController;
  */
 class StatsController extends BaseController
 {
-
-    /**
-     * Displays the stats data for a specific application
-     *
-     * @param string $app
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function appAction($app)
-    {
-        // Check if the application is supported
-        $supported = $this->factory->getParameter('supported_applications');
-
-        if (!in_array($app, $supported)) {
-            $this->createNotFoundException(sprintf('The %s application is not supported.', $app));
-        }
-
-        /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
-        $model   = $this->factory->getModel('charts.stats');
-        $repo    = $model->getRepository();
-        $appData = $repo->getAppData($app);
-
-        if (empty($appData)) {
-            $this->createNotFoundException(sprintf('No data was found for the %s application.', $app));
-        }
-
-        $chartData = [
-            'phpVersion' => [],
-            'dbDriver' => [],
-            'dbVersion' => [],
-            'version' => [],
-            'serverOs' => []
-        ];
-
-        foreach ($appData as $item) {
-            foreach ($chartData as $key => $value) {
-                if (!isset($chartData[$key][$item[$key]])) {
-                    $chartData[$key][$item[$key]] = 0;
-                }
-
-                $chartData[$key][$item[$key]]++;
-            }
-        }
-
-        $data = [];
-
-        foreach ($chartData as $key => $value) {
-            foreach ($value as $name => $count) {
-                $data[$key][] = [
-                    'name'  => $name,
-                    'count' => $count
-                ];
-            }
-        }
-
-        $data['total'] = count($appData);
-
-        return $this->render('StatsAppChartsBundle:Stats:data.html.php', [
-            'application' => $app,
-            'data'        => $data
-        ]);
-    }
-
     /**
      * Receives the POSTed data from downstream applications
      *
@@ -109,7 +46,7 @@ class StatsController extends BaseController
         $supported = $this->factory->getParameter('supported_applications');
 
         if (!in_array($postData['application'], $supported)) {
-            $data['message'] = sprintf('The %s application is not supported');
+            $data['message'] = sprintf('The %s application is not supported', $postData['application']);
 
             return $this->sendJsonResponse($data, 500);
         }
@@ -147,12 +84,48 @@ class StatsController extends BaseController
     public function viewAction()
     {
         /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
-        $model = $this->factory->getModel('charts.stats');
-        $repo  = $model->getRepository();
-        $apps  = $repo->getAppList();
+        $model   = $this->factory->getModel('charts.stats');
+        $repo    = $model->getRepository();
+        $appData = $repo->getAppData('Mautic');
 
-        return $this->render('StatsAppChartsBundle:Stats:index.html.php', [
-            'applications' => $apps
+        if (empty($appData)) {
+            $this->createNotFoundException(sprintf('No data was found for the %s application.', $app));
+        }
+
+        $chartData = [
+            'phpVersion' => [],
+            'dbDriver' => [],
+            'dbVersion' => [],
+            'version' => [],
+            'serverOs' => []
+        ];
+
+        foreach ($appData as $item) {
+            foreach ($chartData as $key => $value) {
+                if (!isset($chartData[$key][$item[$key]])) {
+                    $chartData[$key][$item[$key]] = 0;
+                }
+
+                $chartData[$key][$item[$key]]++;
+            }
+        }
+
+        $data = [];
+
+        foreach ($chartData as $key => $value) {
+            foreach ($value as $name => $count) {
+                $data[$key][] = [
+                    'name'  => $name,
+                    'count' => $count
+                ];
+            }
+        }
+
+        $data['total'] = count($appData);
+
+        return $this->render('StatsAppChartsBundle:Stats:data.html.php', [
+            'application' => 'Mautic',
+            'data'        => $data
         ]);
     }
 }
