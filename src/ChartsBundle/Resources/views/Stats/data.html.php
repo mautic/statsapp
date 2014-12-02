@@ -10,17 +10,16 @@ $view->extend('StatsAppCoreBundle:Base:index.html.php') ?>
 
 <h1>Application Statistics for <?php echo $application; ?></h1>
 
-<div class="row-fluid">
-	<canvas id="appVersions" width="400" height="400"></canvas>
-    <div id="appVersions" class="span6" style="min-height:400px"></div>
-    <div id="phpVersions" class="span6" style="min-height:400px"></div>
+<div class="row">
+    <div id="appVersions" class="col-md-6" style="min-height:400px"></div>
+    <div id="phpVersions" class="col-md-6" style="min-height:400px"></div>
 </div>
 
 <script type="text/javascript">
     jQuery(document).ready(function($){
         var appChart = new CanvasJS.Chart("appVersions", {
             title: {
-                text: "Installed Mautic Versions"
+                text: "Installed Versions"
             },
             data: [{
                 type: "doughnut",
