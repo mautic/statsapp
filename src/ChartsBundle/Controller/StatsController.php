@@ -23,51 +23,7 @@ class StatsController extends BaseController
      */
     public function dataAction()
     {
-        /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
-        $model   = $this->factory->getModel('charts.stats');
-        $repo    = $model->getRepository();
-        $appData = $repo->getAppData('Mautic');
-
-        if (empty($appData)) {
-            $this->createNotFoundException(sprintf('No data was found for the %s application.', $app));
-        }
-
-        $chartData = [
-            'phpVersion' => [],
-            'dbDriver' => [],
-            'dbVersion' => [],
-            'version' => [],
-            'serverOs' => []
-        ];
-
-        foreach ($appData as $item) {
-            foreach ($chartData as $key => $value) {
-                if (!is_null($item[$key])) {
-                    if (!isset($chartData[$key][$item[$key]])) {
-                        $chartData[$key][$item[$key]] = 0;
-                    }
-
-                    $chartData[$key][$item[$key]]++;
-                }
-            }
-        }
-
-        $data = [];
-
-        foreach ($chartData as $key => $value) {
-            foreach ($value as $name => $count) {
-                if ($name) {
-                    $data[$key][] = [
-                        'name'  => $name,
-                        'count' => $count
-                    ];
-                }
-            }
-        }
-
-        $data['total'] = count($appData);
-
-        return new JsonResponse(['stats' => $data]);
+        return new JsonResponse(['stats' => $this->fetchData()]);
     }
 
     /**
@@ -138,6 +94,19 @@ class StatsController extends BaseController
      */
     public function viewAction()
     {
+        return $this->render('StatsAppChartsBundle:Stats:data.html.php', [
+            'application' => 'Mautic',
+            'data'        => $this->fetchData()
+        ]);
+    }
+
+    /**
+     * Fetches the application data
+     *
+     * @return array
+     */
+    private function fetchData()
+    {
         /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
         $model   = $this->factory->getModel('charts.stats');
         $repo    = $model->getRepository();
@@ -182,9 +151,6 @@ class StatsController extends BaseController
 
         $data['total'] = count($appData);
 
-        return $this->render('StatsAppChartsBundle:Stats:data.html.php', [
-            'application' => 'Mautic',
-            'data'        => $data
-        ]);
+        return $data;
     }
 }
