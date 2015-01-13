@@ -23,7 +23,16 @@ class StatsController extends BaseController
      */
     public function dataAction()
     {
-        return new JsonResponse(['stats' => $this->fetchData()]);
+        $data = $this->fetchData();
+
+        $specificChart = $this->request->query->get('source', null);
+
+        if ($specificChart && isset($data[$specificChart]))
+        {
+            $data = $data[$specificChart];
+        }
+
+        return new JsonResponse($data);
     }
 
     /**
