@@ -9,12 +9,67 @@
 namespace StatsApp\ChartsBundle\Controller;
 
 use StatsApp\CoreBundle\Controller\BaseController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class StatsController
  */
 class StatsController extends BaseController
 {
+    /**
+     * Retrieves the stat data as a JSON string
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function dataAction()
+    {
+        /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
+        $model   = $this->factory->getModel('charts.stats');
+        $repo    = $model->getRepository();
+        $appData = $repo->getAppData('Mautic');
+
+        if (empty($appData)) {
+            $this->createNotFoundException(sprintf('No data was found for the %s application.', $app));
+        }
+
+        $chartData = [
+            'phpVersion' => [],
+            'dbDriver' => [],
+            'dbVersion' => [],
+            'version' => [],
+            'serverOs' => []
+        ];
+
+        foreach ($appData as $item) {
+            foreach ($chartData as $key => $value) {
+                if (!is_null($item[$key])) {
+                    if (!isset($chartData[$key][$item[$key]])) {
+                        $chartData[$key][$item[$key]] = 0;
+                    }
+
+                    $chartData[$key][$item[$key]]++;
+                }
+            }
+        }
+
+        $data = [];
+
+        foreach ($chartData as $key => $value) {
+            foreach ($value as $name => $count) {
+                if ($name) {
+                    $data[$key][] = [
+                        'name'  => $name,
+                        'count' => $count
+                    ];
+                }
+            }
+        }
+
+        $data['total'] = count($appData);
+
+        return new JsonResponse(['stats' => $data]);
+    }
+
     /**
      * Receives the POSTed data from downstream applications
      *

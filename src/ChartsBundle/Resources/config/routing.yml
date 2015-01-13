@@ -2,6 +2,10 @@ stats_app_index:
     path:     /
     defaults: { _controller: StatsAppChartsBundle:Stats:view }
 
+stats_app_data:
+    path:     /data
+    defaults: { _controller: StatsAppChartsBundle:Stats:data, _format: json }
+
 stats_app_post:
     path:     /send
     defaults: { _controller: StatsAppChartsBundle:Stats:send }
