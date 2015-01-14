@@ -51,4 +51,22 @@ class StatsRepository extends EntityRepository
     {
         return 's';
     }
+
+    /**
+     * Save an entity through the repository
+     *
+     * @param object $entity
+     * @param bool   $flush true by default; use false if persisting in batches
+     *
+     * @return void
+     */
+    public function saveEntity($entity, $flush = true)
+    {
+        $this->_em->persist($entity);
+
+        if ($flush)
+        {
+            $this->_em->flush();
+        }
+    }
 }

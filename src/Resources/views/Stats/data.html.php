@@ -10,13 +10,20 @@ $view->extend('StatsAppBundle:Base:index.html.php') ?>
 
 <h1>Application Statistics for <?php echo $application; ?></h1>
 
+<?php if (!empty($data)) : ?>
+    <?php $class = (isset($data['version']) && isset($data['phpVersion'])) ? 'col-md-6' : 'col-md-12'; ?>
 <div class="row">
-    <div id="appVersions" class="col-md-6" style="min-height:400px"></div>
-    <div id="phpVersions" class="col-md-6" style="min-height:400px"></div>
+    <?php if (isset($data['version'])) : ?>
+    <div id="appVersions" class="<?php echo $class; ?>" style="min-height:400px"></div>
+    <?php endif; ?>
+    <?php if (isset($data['phpVersion'])) : ?>
+    <div id="phpVersions" class="<?php echo $class; ?>" style="min-height:400px"></div>
+    <?php endif; ?>
 </div>
 
 <script type="text/javascript">
     jQuery(document).ready(function($){
+    <?php if (isset($data['version'])) : ?>
         var appChart = new CanvasJS.Chart("appVersions", {
             title: {
                 text: "Installed Versions"
@@ -34,7 +41,8 @@ $view->extend('StatsAppBundle:Base:index.html.php') ?>
             }]
         });
         appChart.render();
-
+    <?php endif; ?>
+    <?php if (isset($data['phpVersion'])) : ?>
         var phpChart = new CanvasJS.Chart("phpVersions", {
             title: {
                 text: "PHP Versions"
@@ -52,5 +60,9 @@ $view->extend('StatsAppBundle:Base:index.html.php') ?>
             }]
         });
         phpChart.render();
+    <?php endif; ?>
     });
 </script>
+<?php else : ?>
+<div class="alert alert-info">No data found for <?php echo $application; ?></div>
+<?php endif;

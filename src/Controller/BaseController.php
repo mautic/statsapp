@@ -39,7 +39,7 @@ class BaseController extends Controller
      *
      * @return JsonResponse
      */
-    protected function sendJsonResponse(array $data, $code)
+    protected function sendJsonResponse(array $data, $code = 200)
     {
         $response = new JsonResponse($data, $code);
         $response->headers->set('Content-Length', strlen($response->getContent()));

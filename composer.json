@@ -1,45 +1,48 @@
 {
-    "name"       : "webspark/statsapp",
-    "license"    : "GPL-3.0",
-    "type"       : "project",
+    "name": "webspark/statsapp",
+    "license": "GPL-3.0",
+    "type": "project",
     "description": "Application for collecting and processing statistics from remote applications",
-    "autoload"   : {
+    "autoload": {
         "psr-4": {
             "StatsAppBundle\\": "src/"
         }
     },
-    "require"    : {
-        "php"                          : ">=5.4",
-        "symfony/symfony"              : "2.6.*",
-        "doctrine/orm"                 : "~2.2,>=2.2.3",
-        "doctrine/doctrine-bundle"     : "~1.2",
-        "symfony/monolog-bundle"       : "~2.4",
-        "sensio/distribution-bundle"   : "~3.0",
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "2.6.*",
+        "doctrine/orm": "~2.2,>=2.2.3",
+        "doctrine/doctrine-bundle": "~1.2",
+        "symfony/monolog-bundle": "~2.4",
+        "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "~2.2",
+        "liip/functional-test-bundle": "~1.0",
         "sensio/generator-bundle": "~2.3",
-        "twig/extensions"        : "~1.0"
+        "twig/extensions": "~1.0",
+        "phpunit/phpunit": "~4.0"
     },
-    "scripts"    : {
-	    "post-install-cmd": [
+    "scripts": {
+        "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
         ],
-	    "post-update-cmd" : [
+        "post-update-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
         ]
     },
-    "config"     : {
+    "config": {
         "bin-dir": "bin"
     },
-    "extra"      : {
+    "extra": {
         "symfony-app-dir": "app",
-	    "symfony-web-dir": "www"
+        "symfony-web-dir": "www"
     }
 }

@@ -8,7 +8,7 @@
 
 namespace StatsAppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class StatsController
@@ -102,9 +102,15 @@ class StatsController extends BaseController
      */
     public function viewAction()
     {
+        try {
+            $data = $this->fetchData();
+        } catch (NotFoundHttpException $e) {
+            $data = [];
+        }
+
         return $this->render('StatsAppBundle:Stats:data.html.php', [
             'application' => 'Mautic',
-            'data'        => $this->fetchData()
+            'data'        => $data
         ]);
     }
 
@@ -112,6 +118,8 @@ class StatsController extends BaseController
      * Fetches the application data
      *
      * @return array
+     *
+     * @throws NotFoundHttpException
      */
     private function fetchData()
     {
@@ -121,7 +129,7 @@ class StatsController extends BaseController
         $appData = $repo->getAppData('Mautic');
 
         if (empty($appData)) {
-            $this->createNotFoundException(sprintf('No data was found for the %s application.', $app));
+            throw $this->createNotFoundException(sprintf('No data was found for the %s application.', $app));
         }
 
         $chartData = [
