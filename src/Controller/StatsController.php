@@ -56,7 +56,7 @@ class StatsController extends BaseController
 
         // Check for null values on the app, version, and instance; everything else we can do without
         if ($postData['application'] === null || $postData['version'] === null || $postData['instanceId'] === null) {
-            $data['message'] = 'Missing data from the POST request';
+            $data['message'] = $this->get('translator')->trans('Missing data from the POST request');
 
             return $this->sendJsonResponse($data, 500);
         }
@@ -65,7 +65,7 @@ class StatsController extends BaseController
         $supported = $this->factory->getParameter('supported_applications');
 
         if (!in_array($postData['application'], $supported)) {
-            $data['message'] = sprintf('The %s application is not supported', $postData['application']);
+            $data['message'] = $this->get('translator')->trans('The %app% application is not supported', ['%app%' => $postData['application']]);
 
             return $this->sendJsonResponse($data, 500);
         }
@@ -85,10 +85,10 @@ class StatsController extends BaseController
         try {
             $model->saveEntity($entity);
 
-            $data['message'] = 'Data saved successfully';
+            $data['message'] = $this->get('translator')->trans('Data saved successfully');
             $code            = 200;
         } catch (\Exception $exception) {
-            $data['message'] = 'An error occurred while saving the data';
+            $data['message'] = $this->get('translator')->trans('An error occurred while saving the data');
             $code            = 500;
         }
 
@@ -129,7 +129,9 @@ class StatsController extends BaseController
         $appData = $repo->getAppData('Mautic');
 
         if (empty($appData)) {
-            throw $this->createNotFoundException(sprintf('No data was found for the %s application.', $app));
+            throw $this->createNotFoundException(
+                $this->get('translator')->trans('No data was found for the %app% application', ['%app%' => $app])
+            );
         }
 
         $chartData = [

@@ -8,7 +8,7 @@
 
 $view->extend('StatsAppBundle:Base:index.html.php') ?>
 
-<h1>Application Statistics for <?php echo $application; ?></h1>
+<h1><?php echo $view['translator']->trans('Application Statistics for %app%', ['%app%' => $application]); ?></h1>
 
 <?php if (!empty($data)) : ?>
     <?php $class = (isset($data['version']) && isset($data['phpVersion'])) ? 'col-md-6' : 'col-md-12'; ?>
@@ -26,7 +26,7 @@ $view->extend('StatsAppBundle:Base:index.html.php') ?>
     <?php if (isset($data['version'])) : ?>
         var appChart = new CanvasJS.Chart("appVersions", {
             title: {
-                text: "Installed Versions"
+                text: "<?php echo $view['translator']->trans('Installed Versions'); ?>"
             },
             data: [{
                 type: "doughnut",
@@ -45,7 +45,7 @@ $view->extend('StatsAppBundle:Base:index.html.php') ?>
     <?php if (isset($data['phpVersion'])) : ?>
         var phpChart = new CanvasJS.Chart("phpVersions", {
             title: {
-                text: "PHP Versions"
+                text: "<?php echo $view['translator']->trans('PHP Versions'); ?>"
             },
             data: [{
                 type: "doughnut",
@@ -64,5 +64,5 @@ $view->extend('StatsAppBundle:Base:index.html.php') ?>
     });
 </script>
 <?php else : ?>
-<div class="alert alert-info">No data found for <?php echo $application; ?></div>
+<div class="alert alert-info"><?php echo $view['translator']->trans('No data was found for the %app% application', ['%app%' => $application]); ?></div>
 <?php endif;
