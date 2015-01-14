@@ -7,9 +7,9 @@
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-namespace StatsApp\CoreBundle\Controller;
+namespace StatsAppBundle\Controller;
 
-use StatsApp\Factory;
+use StatsAppBundle\Factory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

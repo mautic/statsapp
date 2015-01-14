@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsApp\ChartsBundle\DependencyInjection;
+namespace StatsAppBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('stats_app_charts');
+        $rootNode = $treeBuilder->root('stats_app');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

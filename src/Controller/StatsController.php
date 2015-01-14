@@ -6,9 +6,8 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsApp\ChartsBundle\Controller;
+namespace StatsAppBundle\Controller;
 
-use StatsApp\CoreBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -71,8 +70,8 @@ class StatsController extends BaseController
             return $this->sendJsonResponse($data, 500);
         }
 
-        /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
-        $model = $this->factory->getModel('charts.stats');
+        /** @var \StatsAppBundle\Model\StatsModel $model */
+        $model = $this->factory->getModel('stats');
 
         $entity = $model->getEntity($postData['instanceId'], $postData['application']);
 
@@ -103,7 +102,7 @@ class StatsController extends BaseController
      */
     public function viewAction()
     {
-        return $this->render('StatsAppChartsBundle:Stats:data.html.php', [
+        return $this->render('StatsAppBundle:Stats:data.html.php', [
             'application' => 'Mautic',
             'data'        => $this->fetchData()
         ]);
@@ -116,8 +115,8 @@ class StatsController extends BaseController
      */
     private function fetchData()
     {
-        /** @var \StatsApp\ChartsBundle\Model\StatsModel $model */
-        $model   = $this->factory->getModel('charts.stats');
+        /** @var \StatsAppBundle\Model\StatsModel $model */
+        $model   = $this->factory->getModel('stats');
         $repo    = $model->getRepository();
         $appData = $repo->getAppData('Mautic');
 

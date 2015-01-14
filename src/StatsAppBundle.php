@@ -6,13 +6,13 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsApp\CoreBundle;
+namespace StatsAppBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class StatsAppCoreBundle
+ * Class StatsAppBundle
  */
-class StatsAppCoreBundle extends Bundle
+class StatsAppBundle extends Bundle
 {
 }

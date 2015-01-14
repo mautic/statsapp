@@ -6,9 +6,10 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsApp;
+namespace StatsAppBundle;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 /**
  * Application factory class
@@ -61,18 +62,9 @@ class Factory
     {
         static $models = array();
 
-        // Shortcut for models with same name as bundle
-        if (strpos($name, '.') === false) {
-            $name = "$name.$name";
-        }
-
         if (!array_key_exists($name, $models)) {
-            $parts = explode('.', $name);
-            if (count($parts) !== 2) {
-                throw new NotAcceptableHttpException($name . ' is not an acceptable model name.');
-            }
 
-            $modelClass = '\\StatsApp\\' . ucfirst($parts[0]) . 'Bundle\\Model\\' . ucfirst($parts[1]) . 'Model';
+            $modelClass = '\\StatsAppBundle\\Model\\' . ucfirst($name) . 'Model';
 
             if (!class_exists($modelClass)) {
                 throw new NotAcceptableHttpException($name . ' is not an acceptable model name.');

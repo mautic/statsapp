@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsApp\ChartsBundle\Entity;
+namespace StatsAppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Stats table
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="StatsApp\ChartsBundle\Entity\StatsRepository")
+ * @ORM\Entity(repositoryClass="StatsAppBundle\Entity\StatsRepository")
  */
 class Stats
 {

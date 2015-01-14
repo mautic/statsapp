@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-$view->extend('StatsAppCoreBundle:Base:index.html.php') ?>
+$view->extend('StatsAppBundle:Base:index.html.php') ?>
 
 <h1>Application Statistics for <?php echo $application; ?></h1>
 

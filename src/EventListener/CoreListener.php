@@ -6,10 +6,10 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsApp\CoreBundle\EventListener;
+namespace StatsAppBundle\EventListener;
 
-use StatsApp\CoreBundle\Controller\BaseController;
-use StatsApp\Factory;
+use StatsAppBundle\Controller\BaseController;
+use StatsAppBundle\Factory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 /**

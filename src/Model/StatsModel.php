@@ -6,10 +6,9 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsApp\ChartsBundle\Model;
+namespace StatsAppBundle\Model;
 
-use StatsApp\ChartsBundle\Entity\Stats;
-use StatsApp\CoreBundle\Model\BaseModel;
+use StatsAppBundle\Entity\Stats;
 
 /**
  * Class StatsModel
@@ -19,7 +18,6 @@ class StatsModel extends BaseModel
 
     /**
      * Get a specific entity
-     *
      *
      * @return Stats
      */
@@ -39,10 +37,10 @@ class StatsModel extends BaseModel
     /**
      * {@inheritdoc}
      *
-     * @return \StatsApp\ChartsBundle\Entity\StatsRepository
+     * @return \StatsAppBundle\Entity\StatsRepository
      */
     public function getRepository()
     {
-        return $this->em->getRepository('StatsAppChartsBundle:Stats');
+        return $this->em->getRepository('StatsAppBundle:Stats');
     }
 }

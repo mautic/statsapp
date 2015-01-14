@@ -6,9 +6,9 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsApp\CoreBundle\Model;
+namespace StatsAppBundle\Model;
 
-use StatsApp\Factory;
+use StatsAppBundle\Factory;
 
 /**
  * Class BaseModel
@@ -38,7 +38,7 @@ abstract class BaseModel
     /**
      * Retrieves an entity repository
      *
-     * @return \StatsApp\CoreBundle\Entity\BaseRepository
+     * @return \Doctrine\ORM\EntityRepository
      */
     abstract public function getRepository();
 

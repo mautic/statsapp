@@ -1,4 +1,12 @@
-stats_app_charts:
-    resource: "@StatsAppChartsBundle/Resources/config/routing.yml"
-    prefix:   /
+stats_app_index:
+    path:     /
+    defaults: { _controller: StatsAppBundle:Stats:view }
 
+stats_app_data:
+    path:     /data
+    defaults: { _controller: StatsAppBundle:Stats:data, _format: json }
+
+stats_app_post:
+    path:     /send
+    defaults: { _controller: StatsAppBundle:Stats:send }
+    methods:  [POST]
