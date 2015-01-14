@@ -31,7 +31,7 @@ class StatsController extends BaseController
             $data = $data[$specificChart];
         }
 
-        return new JsonResponse($data);
+        return $this->sendJsonResponse($data);
     }
 
     /**
