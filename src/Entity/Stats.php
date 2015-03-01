@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="StatsAppBundle\Entity\StatsRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Stats
 {
@@ -77,6 +78,21 @@ class Stats
      */
     private $serverOs;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_updated", type="datetime", nullable=true)
+     */
+    private $lastUpdated;
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function updateLastUpdatedTime()
+    {
+        // update the modified time
+        $this->setLastUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
+    }
     /**
      * Get id
      *
@@ -253,5 +269,29 @@ class Stats
     public function getServerOs()
     {
         return $this->serverOs;
+    }
+
+    /**
+     * Set lastUpdated
+     *
+     * @param string $serverOs
+     *
+     * @return Stats
+     */
+    public function setLastUpdated(\DateTime $lastUpdated)
+    {
+        $this->lastUpdated = $lastUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get lastUpdated
+     *
+     * @return \DateTime
+     */
+    public function getLastUpdated()
+    {
+        return $this->lastUpdated;
     }
 }
