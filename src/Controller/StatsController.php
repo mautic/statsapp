@@ -46,7 +46,7 @@ class StatsController extends BaseController
         // Fetch our data from the POST
         $postData = [
             'application' => $this->request->request->get('application', null),
-            'version'     => $this->request->request->get('version', null),
+            'version'     => str_replace('-dev', '', $this->request->request->get('version', null)),
             'phpVersion'  => $this->request->request->get('phpVersion', null),
             'dbDriver'    => $this->request->request->get('dbDriver', null),
             'dbVersion'   => $this->request->request->get('db_version', null),
