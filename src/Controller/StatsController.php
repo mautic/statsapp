@@ -54,7 +54,7 @@ class StatsController extends BaseController
             'version' => str_replace('-dev', '', $this->request->request->get('version', null)),
             'phpVersion' => $this->request->request->get('phpVersion', null),
             'dbDriver' => $this->request->request->get('dbDriver', null),
-            'dbVersion' => $this->request->request->get('db_version', null),
+            'dbVersion' => $this->request->request->get('dbVersion', null),
             'instanceId' => $this->request->request->get('instanceId', null),
             'serverOs' => $this->request->request->get('serverOs', null)
         ];
