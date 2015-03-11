@@ -87,6 +87,6 @@ class Factory
      */
     public function getParameter($key)
     {
-        return $this->container->getParameter('supported_applications');
+        return $this->container->getParameter($key);
     }
 }

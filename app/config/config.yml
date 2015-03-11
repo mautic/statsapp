@@ -46,3 +46,9 @@ doctrine:
 
 parameters:
     supported_applications: ['Mautic']
+    joomla_database:
+        dbname:   "%joomla_dbname%"
+        driver:   "%joomla_driver%"
+        host:     "%joomla_host%"
+        password: "%joomla_password%"
+        user:     "%joomla_user%"

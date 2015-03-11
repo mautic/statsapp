@@ -8,6 +8,8 @@
 
 namespace StatsAppBundle\Controller;
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -22,13 +24,16 @@ class StatsController extends BaseController
      */
     public function dataAction()
     {
+        $source = $this->request->query->get('source', null);
+
+        if ($source === 'downloads') {
+            return $this->fetchDownloadData();
+        }
+
         $data = $this->fetchData();
 
-        $specificChart = $this->request->query->get('source', null);
-
-        if ($specificChart && isset($data[$specificChart]))
-        {
-            $data = $data[$specificChart];
+        if ($source && isset($data[$source])) {
+            $data = $data[$source];
         }
 
         return $this->sendJsonResponse($data);
@@ -46,12 +51,12 @@ class StatsController extends BaseController
         // Fetch our data from the POST
         $postData = [
             'application' => $this->request->request->get('application', null),
-            'version'     => str_replace('-dev', '', $this->request->request->get('version', null)),
-            'phpVersion'  => $this->request->request->get('phpVersion', null),
-            'dbDriver'    => $this->request->request->get('dbDriver', null),
-            'dbVersion'   => $this->request->request->get('db_version', null),
-            'instanceId'  => $this->request->request->get('instanceId', null),
-            'serverOs'    => $this->request->request->get('serverOs', null)
+            'version' => str_replace('-dev', '', $this->request->request->get('version', null)),
+            'phpVersion' => $this->request->request->get('phpVersion', null),
+            'dbDriver' => $this->request->request->get('dbDriver', null),
+            'dbVersion' => $this->request->request->get('db_version', null),
+            'instanceId' => $this->request->request->get('instanceId', null),
+            'serverOs' => $this->request->request->get('serverOs', null)
         ];
 
         // Check for null values on the app, version, and instance; everything else we can do without
@@ -86,10 +91,10 @@ class StatsController extends BaseController
             $model->saveEntity($entity);
 
             $data['message'] = $this->get('translator')->trans('Data saved successfully');
-            $code            = 200;
+            $code = 200;
         } catch (\Exception $exception) {
             $data['message'] = $this->get('translator')->trans('An error occurred while saving the data');
-            $code            = 500;
+            $code = 500;
         }
 
         return $this->sendJsonResponse($data, $code);
@@ -110,7 +115,7 @@ class StatsController extends BaseController
 
         return $this->render('StatsAppBundle:Stats:data.html.php', [
             'application' => 'Mautic',
-            'data'        => $data
+            'data' => $data
         ]);
     }
 
@@ -124,8 +129,8 @@ class StatsController extends BaseController
     private function fetchData()
     {
         /** @var \StatsAppBundle\Model\StatsModel $model */
-        $model   = $this->factory->getModel('stats');
-        $repo    = $model->getRepository();
+        $model = $this->factory->getModel('stats');
+        $repo = $model->getRepository();
         $appData = $repo->getAppData('Mautic');
 
         if (empty($appData)) {
@@ -160,7 +165,7 @@ class StatsController extends BaseController
             foreach ($value as $name => $count) {
                 if ($name) {
                     $data[$key][] = [
-                        'name'  => $name,
+                        'name' => $name,
                         'count' => $count
                     ];
                 }
@@ -170,5 +175,45 @@ class StatsController extends BaseController
         $data['total'] = count($appData);
 
         return $data;
+    }
+
+    /**
+     * Fetches the download count in JSON format
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    private function fetchDownloadData()
+    {
+        $data = [];
+
+        try {
+            $connection = DriverManager::getConnection($this->factory->getParameter('joomla_database'));
+        } catch (DBALException $exception) {
+            $data['message'] = $this->get('translator')->trans('Could not establish database connection');
+
+            return $this->sendJsonResponse($data, 500);
+        }
+
+        $query = $connection->createQueryBuilder()
+            ->select('r.version', 'r.download_count')
+            ->from($this->factory->getParameter('joomla_dbprefix') . 'mautic_releases', 'r');
+
+        try {
+            $results = $connection->fetchAll($query->getSQL());
+        } catch (DBALException $exception) {
+            $data['message'] = $this->get('translator')->trans('Could not retrieve download data');
+
+            return $this->sendJsonResponse($data, 500);
+        }
+
+        $versions = [];
+
+        foreach ($results as $result) {
+            $versions[$result['version']] = $result['download_count'];
+        }
+
+        $data['releases'] = $versions;
+
+        return $this->sendJsonResponse($data);
     }
 }
