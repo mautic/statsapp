@@ -206,13 +206,16 @@ class StatsController extends BaseController
             return $this->sendJsonResponse($data, 500);
         }
 
+        $total = 0;
         $versions = [];
 
         foreach ($results as $result) {
             $versions[$result['version']] = $result['download_count'];
+            $total += $result['download_count'];
         }
 
         $data['releases'] = $versions;
+        $data['total'] = $total;
 
         return $this->sendJsonResponse($data);
     }
