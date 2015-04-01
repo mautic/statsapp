@@ -23,8 +23,7 @@ class StatsRepository extends EntityRepository
     public function getAppData($application)
     {
         $query = $this->createQueryBuilder($this->getTableAlias());
-        $query->select('s')
-            ->where($query->expr()->eq('s.application', ':application'))
+        $query->where($query->expr()->eq($this->getTableAlias() . '.application', ':application'))
             ->setParameter('application', $application);
 
         return $query->getQuery()->getArrayResult();
@@ -38,7 +37,7 @@ class StatsRepository extends EntityRepository
     public function getAppList()
     {
         $query = $this->createQueryBuilder($this->getTableAlias())
-            ->select('s.application AS name, count(s.application) AS installs')
+            ->select($this->getTableAlias() . '.application AS name, count(' . $this->getTableAlias() . '.application) AS installs')
             ->groupBy('name');
 
         return $query->getQuery()->getResult();
@@ -56,7 +55,7 @@ class StatsRepository extends EntityRepository
      * Save an entity through the repository
      *
      * @param object $entity
-     * @param bool   $flush true by default; use false if persisting in batches
+     * @param bool $flush true by default; use false if persisting in batches
      *
      * @return void
      */
@@ -64,8 +63,7 @@ class StatsRepository extends EntityRepository
     {
         $this->_em->persist($entity);
 
-        if ($flush)
-        {
+        if ($flush) {
             $this->_em->flush();
         }
     }
