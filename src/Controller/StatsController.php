@@ -56,7 +56,8 @@ class StatsController extends BaseController
             'dbDriver' => $this->request->request->get('dbDriver', null),
             'dbVersion' => $this->request->request->get('dbVersion', null),
             'instanceId' => $this->request->request->get('instanceId', null),
-            'serverOs' => $this->request->request->get('serverOs', null)
+            'serverOs' => $this->request->request->get('serverOs', null),
+            'installSource' => $this->request->request->get('installSource', null)
         ];
 
         // Check for null values on the app, version, and instance; everything else we can do without
@@ -144,7 +145,8 @@ class StatsController extends BaseController
             'dbDriver' => [],
             'dbVersion' => [],
             'version' => [],
-            'serverOs' => []
+            'serverOs' => [],
+            'installSource' => []
         ];
 
         foreach ($appData as $item) {

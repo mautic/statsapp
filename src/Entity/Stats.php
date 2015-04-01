@@ -86,6 +86,13 @@ class Stats
     private $lastUpdated;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="install_source", type="text", nullable=true)
+     */
+    private $installSource;
+
+    /**
      * @ORM\PreUpdate()
      */
     public function updateLastUpdatedTime()
@@ -293,5 +300,29 @@ class Stats
     public function getLastUpdated()
     {
         return $this->lastUpdated;
+    }
+
+    /**
+     * Set installSource
+     *
+     * @param string $installSource
+     *
+     * @return Stats
+     */
+    public function setInstallSource($installSource)
+    {
+        $this->installSource = $installSource;
+
+        return $this;
+    }
+
+    /**
+     * Get installSource
+     *
+     * @return string
+     */
+    public function getInstallSource()
+    {
+        return $this->installSource;
     }
 }
