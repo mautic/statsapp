@@ -1,10 +1,4 @@
 services:
-    stats_app.factory:
-        class: StatsAppBundle\Factory
-        arguments: [@service_container]
-
-    kernel.listener.stats_app_core_listener:
-        class: StatsAppBundle\EventListener\CoreListener
-        arguments: [@stats_app.factory]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+    stats_app.stats.model:
+        class: StatsAppBundle\Model\StatsModel
+        arguments: [@doctrine.orm.default_entity_manager]

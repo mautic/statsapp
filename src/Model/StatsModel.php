@@ -8,13 +8,27 @@
 
 namespace StatsAppBundle\Model;
 
+use Doctrine\ORM\EntityManager;
 use StatsAppBundle\Entity\Stats;
 
 /**
  * Class StatsModel
  */
-class StatsModel extends BaseModel
+class StatsModel
 {
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
 
     /**
      * Get a specific entity
@@ -35,12 +49,24 @@ class StatsModel extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * Retrieves an entity repository
      *
      * @return \StatsAppBundle\Entity\StatsRepository
      */
     public function getRepository()
     {
         return $this->em->getRepository('StatsAppBundle:Stats');
+    }
+
+    /**
+     * Save an entity
+     *
+     * @param object $entity
+     *
+     * @return void
+     */
+    public function saveEntity($entity)
+    {
+        $this->getRepository()->saveEntity($entity);
     }
 }

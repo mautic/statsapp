@@ -10,21 +10,26 @@ namespace StatsAppBundle\Controller;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class StatsController
  */
-class StatsController extends BaseController
+class StatsController extends Controller
 {
     /**
      * Retrieves the stat data as a JSON string
      *
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function dataAction()
+    public function dataAction(Request $request)
     {
-        $source = $this->request->query->get('source', null);
+        $source = $request->query->get('source', null);
 
         if ($source === 'downloads') {
             return $this->fetchDownloadData();
@@ -42,22 +47,24 @@ class StatsController extends BaseController
     /**
      * Receives the POSTed data from downstream applications
      *
+     * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function sendAction()
+    public function sendAction(Request $request)
     {
         $data = [];
 
         // Fetch our data from the POST
         $postData = [
-            'application' => $this->request->request->get('application', null),
-            'version' => str_replace('-dev', '', $this->request->request->get('version', null)),
-            'phpVersion' => $this->request->request->get('phpVersion', null),
-            'dbDriver' => $this->request->request->get('dbDriver', null),
-            'dbVersion' => $this->request->request->get('dbVersion', null),
-            'instanceId' => $this->request->request->get('instanceId', null),
-            'serverOs' => $this->request->request->get('serverOs', null),
-            'installSource' => $this->request->request->get('installSource', null)
+            'application' => $request->request->get('application', null),
+            'version' => str_replace('-dev', '', $request->request->get('version', null)),
+            'phpVersion' => $request->request->get('phpVersion', null),
+            'dbDriver' => $request->request->get('dbDriver', null),
+            'dbVersion' => $request->request->get('dbVersion', null),
+            'instanceId' => $request->request->get('instanceId', null),
+            'serverOs' => $request->request->get('serverOs', null),
+            'installSource' => $request->request->get('installSource', null)
         ];
 
         // Check for null values on the app, version, and instance; everything else we can do without
@@ -77,7 +84,7 @@ class StatsController extends BaseController
         }
 
         /** @var \StatsAppBundle\Model\StatsModel $model */
-        $model = $this->factory->getModel('stats');
+        $model = $this->container->get('stats_app.stats.model');
 
         $entity = $model->getEntity($postData['instanceId'], $postData['application']);
 
@@ -121,6 +128,21 @@ class StatsController extends BaseController
     }
 
     /**
+     * Sends a JSON response
+     *
+     * @param array $data The response data
+     * @param int   $code The response status code
+     *
+     * @return JsonResponse
+     */
+    private function sendJsonResponse(array $data, $code = 200)
+    {
+        $response = new JsonResponse($data, $code);
+        $response->headers->set('Content-Length', strlen($response->getContent()));
+        return $response;
+    }
+
+    /**
      * Fetches the application data
      *
      * @return array
@@ -130,7 +152,7 @@ class StatsController extends BaseController
     private function fetchData()
     {
         /** @var \StatsAppBundle\Model\StatsModel $model */
-        $model = $this->factory->getModel('stats');
+        $model = $this->container->get('stats_app.stats.model');
         $repo = $model->getRepository();
         $appData = $repo->getAppData('Mautic');
 
