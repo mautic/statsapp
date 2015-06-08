@@ -68,7 +68,7 @@ class StatsController extends BaseController
         }
 
         // Check if the application is supported
-        $supported = $this->factory->getParameter('supported_applications');
+        $supported = $this->getParameter('supported_applications');
 
         if (!in_array($postData['application'], $supported)) {
             $data['message'] = $this->get('translator')->trans('The %app% application is not supported', ['%app%' => $postData['application']]);
@@ -189,7 +189,7 @@ class StatsController extends BaseController
         $data = [];
 
         try {
-            $connection = DriverManager::getConnection($this->factory->getParameter('joomla_database'));
+            $connection = DriverManager::getConnection($this->getParameter('joomla_database'));
         } catch (DBALException $exception) {
             $data['message'] = $this->get('translator')->trans('Could not establish database connection');
 
@@ -198,7 +198,7 @@ class StatsController extends BaseController
 
         $query = $connection->createQueryBuilder()
             ->select('r.version', 'r.download_count')
-            ->from($this->factory->getParameter('joomla_dbprefix') . 'mautic_releases', 'r');
+            ->from($this->getParameter('joomla_dbprefix') . 'mautic_releases', 'r');
 
         try {
             $results = $connection->fetchAll($query->getSQL());
