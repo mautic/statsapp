@@ -2,7 +2,7 @@
 /**
  * Stats Gathering Application
  *
- * @copyright  Copyright (C) 2014 WebSpark, Inc. All rights reserved.
+ * @copyright  Copyright (C) WebSpark, Inc. All rights reserved.
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
- * Class AppKernel
+ * Stats Application Kernel
  */
 class AppKernel extends Kernel
 {
@@ -19,6 +19,7 @@ class AppKernel extends Kernel
      */
     public function registerBundles()
     {
+        // Bundles that are always loaded
         $bundles = [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
@@ -26,11 +27,16 @@ class AppKernel extends Kernel
             new StatsAppBundle\StatsAppBundle(),
         ];
 
+        // Bundles only loaded in dev or test envs
         if (in_array($this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-	        $bundles[] = new Symfony\Bundle\TwigBundle\TwigBundle();
+            $bundles[] = new Symfony\Bundle\TwigBundle\TwigBundle();
+        }
+
+        // Bundles only loaded in test env
+        if ($this->getEnvironment() === 'test') {
             $bundles[] = new Liip\FunctionalTestBundle\LiipFunctionalTestBundle();
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
@@ -43,6 +49,6 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
+        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
 }

@@ -2,7 +2,7 @@
 /**
  * Stats Gathering Application
  *
- * @copyright  Copyright (C) 2014 WebSpark, Inc. All rights reserved.
+ * @copyright  Copyright (C) WebSpark, Inc. All rights reserved.
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
@@ -41,9 +41,7 @@ class StatsModel
             return new Stats();
         }
 
-        $repo = $this->getRepository();
-
-        $entity = $repo->findOneBy(['instanceId' => $instanceId, 'application' => $application]);
+        $entity = $this->getRepository()->findOneBy(['instanceId' => $instanceId, 'application' => $application]);
 
         return ($entity === null) ? new Stats() : $entity;
     }

@@ -2,7 +2,7 @@
 /**
  * Stats Gathering Application
  *
- * @copyright  Copyright (C) 2014 WebSpark, Inc. All rights reserved.
+ * @copyright  Copyright (C) WebSpark, Inc. All rights reserved.
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
@@ -25,7 +25,7 @@ class StatsController extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      */
     public function dataAction(Request $request)
     {
@@ -49,7 +49,7 @@ class StatsController extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function sendAction(Request $request)
     {
@@ -78,19 +78,22 @@ class StatsController extends Controller
         $supported = $this->getParameter('supported_applications');
 
         if (!in_array($postData['application'], $supported)) {
-            $data['message'] = $this->get('translator')->trans('The %app% application is not supported', ['%app%' => $postData['application']]);
+            $data['message'] = $this->get('translator')->trans(
+                'The %app% application is not supported',
+                ['%app%' => $postData['application']]
+            );
 
             return $this->sendJsonResponse($data, 500);
         }
 
         /** @var \StatsAppBundle\Model\StatsModel $model */
-        $model = $this->container->get('stats_app.stats.model');
+        $model = $this->get('stats_app.stats.model');
 
         $entity = $model->getEntity($postData['instanceId'], $postData['application']);
 
         // Loop over the post data and set it to the entity
         foreach ($postData as $key => $value) {
-            $method = 'set' . ucwords($key);
+            $method = 'set'.ucwords($key);
             $entity->$method($value);
         }
 
@@ -121,17 +124,20 @@ class StatsController extends Controller
             $data = [];
         }
 
-        return $this->render('StatsAppBundle:Stats:data.html.php', [
-            'application' => 'Mautic',
-            'data' => $data
-        ]);
+        return $this->render(
+            'StatsAppBundle:Stats:data.html.php',
+            [
+                'application' => 'Mautic',
+                'data' => $data
+            ]
+        );
     }
 
     /**
      * Sends a JSON response
      *
      * @param array $data The response data
-     * @param int   $code The response status code
+     * @param int $code The response status code
      *
      * @return JsonResponse
      */
@@ -139,6 +145,7 @@ class StatsController extends Controller
     {
         $response = new JsonResponse($data, $code);
         $response->headers->set('Content-Length', strlen($response->getContent()));
+
         return $response;
     }
 
@@ -146,14 +153,12 @@ class StatsController extends Controller
      * Fetches the application data
      *
      * @return array
-     *
      * @throws NotFoundHttpException
      */
     private function fetchData()
     {
-        /** @var \StatsAppBundle\Model\StatsModel $model */
-        $model = $this->container->get('stats_app.stats.model');
-        $repo = $model->getRepository();
+        /** @var \StatsAppBundle\Entity\StatsRepository $repo */
+        $repo = $this->getDoctrine()->getRepository('StatsAppBundle:Stats');
         $appData = $repo->getAppData('Mautic');
 
         if (empty($appData)) {
@@ -204,7 +209,7 @@ class StatsController extends Controller
     /**
      * Fetches the download count in JSON format
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     private function fetchDownloadData()
     {
@@ -220,7 +225,7 @@ class StatsController extends Controller
 
         $query = $connection->createQueryBuilder()
             ->select('r.version', 'r.download_count')
-            ->from($this->getParameter('joomla_dbprefix') . 'mautic_releases', 'r');
+            ->from($this->getParameter('joomla_dbprefix').'mautic_releases', 'r');
 
         try {
             $results = $connection->fetchAll($query->getSQL());

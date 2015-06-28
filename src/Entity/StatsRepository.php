@@ -2,7 +2,7 @@
 /**
  * Stats Gathering Application
  *
- * @copyright  Copyright (C) 2014 WebSpark, Inc. All rights reserved.
+ * @copyright  Copyright (C) WebSpark, Inc. All rights reserved.
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
@@ -23,28 +23,16 @@ class StatsRepository extends EntityRepository
     public function getAppData($application)
     {
         $query = $this->createQueryBuilder($this->getTableAlias());
-        $query->where($query->expr()->eq($this->getTableAlias() . '.application', ':application'))
+        $query->where($query->expr()->eq($this->getTableAlias().'.application', ':application'))
             ->setParameter('application', $application);
 
         return $query->getQuery()->getArrayResult();
     }
 
     /**
-     * Retrieves a list of applications and the number of installs in each
+     * Retrieve the alias for the entity
      *
-     * @return array
-     */
-    public function getAppList()
-    {
-        $query = $this->createQueryBuilder($this->getTableAlias())
-            ->select($this->getTableAlias() . '.application AS name, count(' . $this->getTableAlias() . '.application) AS installs')
-            ->groupBy('name');
-
-        return $query->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getTableAlias()
     {
@@ -55,16 +43,16 @@ class StatsRepository extends EntityRepository
      * Save an entity through the repository
      *
      * @param object $entity
-     * @param bool $flush true by default; use false if persisting in batches
+     * @param bool   $flush true by default; use false if persisting in batches
      *
      * @return void
      */
     public function saveEntity($entity, $flush = true)
     {
-        $this->_em->persist($entity);
+        $this->getEntityManager()->persist($entity);
 
         if ($flush) {
-            $this->_em->flush();
+            $this->getEntityManager()->flush();
         }
     }
 }
