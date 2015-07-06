@@ -93,6 +93,7 @@ class Stats
     private $installSource;
 
     /**
+     * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
     public function updateLastUpdatedTime()
