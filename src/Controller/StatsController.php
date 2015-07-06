@@ -59,7 +59,7 @@ class StatsController extends FOSRestController
         }
 
         $view = $this->view($data, 200)
-            ->setTemplate('StatsAppBundle:Stats:data.html.php')
+            ->setTemplate('StatsAppBundle:Stats:data.html.twig')
             ->setTemplateData(
                 [
                     'application' => 'Mautic',
@@ -290,7 +290,7 @@ class StatsController extends FOSRestController
         $data['total'] = $total;
 
         // Check if returning a specific source
-        if ($source !== 'all') {
+        if ($source !== 'all' && isset($data[$source])) {
             return [
                 $source => $data[$source],
                 'total' => $total

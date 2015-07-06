@@ -1,0 +1,69 @@
+{% extends 'StatsAppBundle:Base:index.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'Application Statistics for %app%'|trans({'%app%': application}) }}</h1>
+
+    {% if data|length %}
+        {% set _colWidth = (data.version and data.phpVersion ? 'col-md-6' : 'col-md-12') %}
+        <div class="row">
+            {% if data.version %}
+                <div id="appVersions" class="{{ _colWidth }}" style="min-height:400px"></div>
+            {% endif %}
+            {% if data.phpVersion %}
+                <div id="phpVersions" class="{{ _colWidth }}" style="min-height:400px"></div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">{{ 'No data was found for the %app% application'|trans({'%app%': application}) }}</div>
+    {% endif %}
+{% endblock %}
+
+{% block bodyJavaScript %}
+    {{ parent() }}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/canvasjs/1.4.1/canvas.min.js"></script>
+
+    {% if data|length %}
+        <script type="text/javascript">
+            jQuery(document).ready(function ($) {
+                {% if data.version %}
+                var appChart = new CanvasJS.Chart("appVersions", {
+                    title: {
+                        text: "{{ 'Installed Versions'|trans }}"
+                    },
+                    data: [{
+                        type: "doughnut",
+                        dataPoints: [
+                            {% for version, count in data.version %}
+                            {
+                                y: {{ count }},
+                                indexLabel: "{{ version }}"
+                            },
+                            {% endfor %}
+                        ]
+                    }]
+                });
+                appChart.render();
+                {% endif %}
+                {% if data.phpVersion %}
+                var phpChart = new CanvasJS.Chart("phpVersions", {
+                    title: {
+                        text: "{{ 'PHP Versions'|trans }}"
+                    },
+                    data: [{
+                        type: "doughnut",
+                        dataPoints: [
+                            {% for version, count in data.phpVersion %}
+                            {
+                                y: {{ count }},
+                                indexLabel: "{{ version }}"
+                            },
+                            {% endfor %}
+                        ]
+                    }]
+                });
+                phpChart.render();
+                {% endif %}
+            });
+        </script>
+    {% endif %}
+{% endblock %}
