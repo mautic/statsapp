@@ -76,7 +76,7 @@ class StatsController extends WebTestCase
         $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
 
         $response = json_decode($client->getResponse()->getContent(), true);
-        $this->assertArrayHasKey('5.5', $response['phpVersion']);
+        $this->assertArrayHasKey(PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION, $response['phpVersion']);
     }
 
     public function testGetDataActionSingleSourceWithAuthorizationHeader()
@@ -92,7 +92,7 @@ class StatsController extends WebTestCase
         $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
 
         $response = json_decode($client->getResponse()->getContent(), true);
-        $this->assertSame(['phpVersion' => [['name' => '5.5.26', 'count' => 1]], 'total' => 1], $response);
+        $this->assertSame(['phpVersion' => [['name' => PHP_VERSION, 'count' => 1]], 'total' => 1], $response);
     }
 
     public function testLegacySendAction()
