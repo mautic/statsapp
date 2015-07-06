@@ -76,7 +76,23 @@ class StatsController extends WebTestCase
         $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
 
         $response = json_decode($client->getResponse()->getContent(), true);
-        $this->assertArrayHasKey('phpVersion', $response);
+        $this->assertArrayHasKey('5.5', $response['phpVersion']);
+    }
+
+    public function testGetDataActionSingleSourceWithAuthorizationHeader()
+    {
+        $fixtures = ['StatsAppBundle\Tests\Fixtures\LoadStatsData'];
+        $this->loadFixtures($fixtures);
+
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/phpVersion', [], [], ['HTTP_MAUTIC_RAW' => $this->getContainer()->getParameter('mautic_raw_header')]);
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
+
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertSame(['phpVersion' => [['name' => '5.5.26', 'count' => 1]], 'total' => 1], $response);
     }
 
     public function testLegacySendAction()

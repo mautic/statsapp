@@ -41,7 +41,7 @@ class StatsController extends FOSRestController
      * Retrieves the stat data as a JSON string
      *
      * @param Request $request
-     * @param string  $source The data source, defaults to 'all'
+     * @param string $source The data source, defaults to 'all'
      *
      * @return Response
      *
@@ -49,7 +49,7 @@ class StatsController extends FOSRestController
      */
     public function getDataAction(Request $request, $source = 'all')
     {
-        $data = $this->fetchData($source);
+        $data = $this->fetchData($request, $source);
 
         // The downloads source may send back a message for an error condition instead of data so check for this
         if ($source === 'downloads' && isset($data['message'])) {
@@ -60,10 +60,12 @@ class StatsController extends FOSRestController
 
         $view = $this->view($data, 200)
             ->setTemplate('StatsAppBundle:Stats:data.html.php')
-            ->setTemplateData([
-                'application' => 'Mautic',
-                'data' => $data
-            ]);
+            ->setTemplateData(
+                [
+                    'application' => 'Mautic',
+                    'data' => $data
+                ]
+            );
 
         return $this->handleView($view);
     }
@@ -146,12 +148,13 @@ class StatsController extends FOSRestController
     /**
      * Fetches the requested source data for the application
      *
+     * @param Request $request
      * @param string $source
      *
      * @return array
      * @throws NotFoundHttpException
      */
-    private function fetchData($source)
+    private function fetchData(Request $request, $source)
     {
         // If the source is downloads, then use our method that's specifically pulling this
         if ($source === 'downloads') {
@@ -203,8 +206,10 @@ class StatsController extends FOSRestController
         }
 
         // Filter our data into percentages unless authorized to receive raw data
-        // TODO - Implement auth check
-        $authorizedRaw = false;
+        $authorizedRaw = $request->headers->has('Mautic-Raw') && $request->headers->get(
+                'Mautic-Raw',
+                'fail'
+            ) === $this->getParameter('mautic_raw_header');
         $total = count($appData);
 
         if (!$authorizedRaw) {
