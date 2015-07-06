@@ -10,38 +10,62 @@ namespace StatsAppBundle\Controller;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class StatsController
  */
-class StatsController extends Controller
+class StatsController extends FOSRestController
 {
+    /**
+     * Legacy handler for /data route requests
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function dataAction(Request $request)
+    {
+        $source = $request->query->get('source', 'all');
+
+        // Proxy to the updated action
+        return $this->getDataAction($request, $source);
+    }
+
     /**
      * Retrieves the stat data as a JSON string
      *
      * @param Request $request
+     * @param string  $source The data source, defaults to 'all'
      *
-     * @return JsonResponse
+     * @return Response
+     *
+     * @Get("/{source}", defaults={"source": "all"})
      */
-    public function dataAction(Request $request)
+    public function getDataAction(Request $request, $source = 'all')
     {
-        $source = $request->query->get('source', null);
+        $data = $this->fetchData($source);
 
-        if ($source === 'downloads') {
-            return $this->fetchDownloadData();
+        // The downloads source may send back a message for an error condition instead of data so check for this
+        if ($source === 'downloads' && isset($data['message'])) {
+            $view = $this->view($data, 500);
+
+            return $this->handleView($view);
         }
 
-        $data = $this->fetchData();
+        $view = $this->view($data, 200)
+            ->setTemplate('StatsAppBundle:Stats:data.html.php')
+            ->setTemplateData([
+                'application' => 'Mautic',
+                'data' => $data
+            ]);
 
-        if ($source && isset($data[$source])) {
-            $data = $data[$source];
-        }
-
-        return $this->sendJsonResponse($data);
+        return $this->handleView($view);
     }
 
     /**
@@ -49,9 +73,11 @@ class StatsController extends Controller
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
+     *
+     * @Post("/")
      */
-    public function sendAction(Request $request)
+    public function postDataAction(Request $request)
     {
         $data = [];
 
@@ -71,7 +97,9 @@ class StatsController extends Controller
         if ($postData['application'] === null || $postData['version'] === null || $postData['instanceId'] === null) {
             $data['message'] = $this->get('translator')->trans('Missing data from the POST request');
 
-            return $this->sendJsonResponse($data, 500);
+            $view = $this->view($data, 500);
+
+            return $this->handleView($view);
         }
 
         // Check if the application is supported
@@ -83,7 +111,9 @@ class StatsController extends Controller
                 ['%app%' => $postData['application']]
             );
 
-            return $this->sendJsonResponse($data, 500);
+            $view = $this->view($data, 500);
+
+            return $this->handleView($view);
         }
 
         /** @var \StatsAppBundle\Model\StatsModel $model */
@@ -108,55 +138,26 @@ class StatsController extends Controller
             $code = 500;
         }
 
-        return $this->sendJsonResponse($data, $code);
+        $view = $this->view($data, $code);
+
+        return $this->handleView($view);
     }
 
     /**
-     * Displays the stats data
+     * Fetches the requested source data for the application
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function viewAction()
-    {
-        try {
-            $data = $this->fetchData();
-        } catch (NotFoundHttpException $e) {
-            $data = [];
-        }
-
-        return $this->render(
-            'StatsAppBundle:Stats:data.html.php',
-            [
-                'application' => 'Mautic',
-                'data' => $data
-            ]
-        );
-    }
-
-    /**
-     * Sends a JSON response
-     *
-     * @param array $data The response data
-     * @param int $code The response status code
-     *
-     * @return JsonResponse
-     */
-    private function sendJsonResponse(array $data, $code = 200)
-    {
-        $response = new JsonResponse($data, $code);
-        $response->headers->set('Content-Length', strlen($response->getContent()));
-
-        return $response;
-    }
-
-    /**
-     * Fetches the application data
+     * @param string $source
      *
      * @return array
      * @throws NotFoundHttpException
      */
-    private function fetchData()
+    private function fetchData($source)
     {
+        // If the source is downloads, then use our method that's specifically pulling this
+        if ($source === 'downloads') {
+            return $this->fetchDownloadData();
+        }
+
         /** @var \StatsAppBundle\Entity\StatsRepository $repo */
         $repo = $this->getDoctrine()->getRepository('StatsAppBundle:Stats');
         $appData = $repo->getAppData('Mautic');
@@ -201,15 +202,103 @@ class StatsController extends Controller
             }
         }
 
-        $data['total'] = count($appData);
+        // Filter our data into percentages unless authorized to receive raw data
+        // TODO - Implement auth check
+        $authorizedRaw = false;
+        $total = count($appData);
+
+        if (!$authorizedRaw) {
+            foreach ($data as $key => $dataGroup) {
+                switch ($key) {
+                    case 'phpVersion':
+                        // We're going to group by minor version branch here and convert to a percentage
+                        $counts = [];
+
+                        foreach ($dataGroup as $row) {
+                            $version = substr($row['name'], 0, 3);
+
+                            // If the container does not exist, add it
+                            if (!isset($counts[$version])) {
+                                $counts[$version] = 0;
+                            }
+
+                            $counts[$version] += $row['count'];
+                        }
+
+                        $sanitizedData = [];
+
+                        foreach ($counts as $version => $count) {
+                            $sanitizedData[$version] = round($count / $total, 4) * 100;
+                        }
+
+                        $data[$key] = $sanitizedData;
+
+                        break;
+
+                    case 'serverOs':
+                        // We're going to group by operating system here
+                        $counts = [];
+
+                        foreach ($dataGroup as $row) {
+                            $fullOs = explode(' ', $row['name']);
+                            $os = $fullOs[0];
+
+                            if (!$os) {
+                                $os = 'unknown';
+                            }
+
+                            // If the container does not exist, add it
+                            if (!isset($counts[$os])) {
+                                $counts[$os] = 0;
+                            }
+
+                            $counts[$os] += $row['count'];
+                        }
+
+                        $sanitizedData = [];
+
+                        foreach ($counts as $os => $count) {
+                            $sanitizedData[$os] = round($count / $total, 4) * 100;
+                        }
+
+                        $data[$key] = $sanitizedData;
+
+                        break;
+
+                    case 'dbDriver':
+                    case 'version':
+                    default:
+                        // For now, group by the object name and figure out the percentages
+                        $sanitizedData = [];
+
+                        foreach ($dataGroup as $row) {
+                            $sanitizedData[$row['name']] = round($row['count'] / $total, 4) * 100;
+                        }
+
+                        $data[$key] = $sanitizedData;
+
+                        break;
+                }
+            }
+        }
+
+        $data['total'] = $total;
+
+        // Check if returning a specific source
+        if ($source !== 'all') {
+            return [
+                $source => $data[$source],
+                'total' => $total
+            ];
+        }
 
         return $data;
     }
 
     /**
-     * Fetches the download count in JSON format
+     * Fetches the download count based on collected stats in the download component
      *
-     * @return JsonResponse
+     * @return array
      */
     private function fetchDownloadData()
     {
@@ -220,7 +309,9 @@ class StatsController extends Controller
         } catch (DBALException $exception) {
             $data['message'] = $this->get('translator')->trans('Could not establish database connection');
 
-            return $this->sendJsonResponse($data, 500);
+            $view = $this->view($data, 500);
+
+            return $this->handleView($view);
         }
 
         $query = $connection->createQueryBuilder()
@@ -232,7 +323,9 @@ class StatsController extends Controller
         } catch (DBALException $exception) {
             $data['message'] = $this->get('translator')->trans('Could not retrieve download data');
 
-            return $this->sendJsonResponse($data, 500);
+            $view = $this->view($data, 500);
+
+            return $this->handleView($view);
         }
 
         $total = 0;
@@ -246,6 +339,6 @@ class StatsController extends Controller
         $data['releases'] = $versions;
         $data['total'] = $total;
 
-        return $this->sendJsonResponse($data);
+        return $data;
     }
 }

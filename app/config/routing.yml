@@ -1,12 +1,14 @@
 stats_app_index:
-    path:     /
-    defaults: { _controller: StatsAppBundle:Stats:view }
+    type: rest
+    resource: StatsAppBundle\Controller\StatsController
 
+# Legacy GET handler
 stats_app_data:
     path:     /data
     defaults: { _controller: StatsAppBundle:Stats:data, _format: json }
 
+# Legacy POST handler
 stats_app_post:
     path:     /send
-    defaults: { _controller: StatsAppBundle:Stats:send }
+    defaults: { _controller: StatsAppBundle:Stats:postData }
     methods:  [POST]

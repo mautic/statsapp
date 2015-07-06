@@ -25,10 +25,14 @@
         "symfony/security": "2.7.*",
         "symfony/templating": "2.7.*",
         "symfony/translation": "2.7.*",
+        "symfony/validator": "2.7.*",
         "symfony/yaml": "2.7.*",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "~1.2",
-        "sensio/distribution-bundle": "~3.0"
+        "friendsofsymfony/rest-bundle": "~1.7",
+        "jms/serializer-bundle": "~1.0",
+        "sensio/distribution-bundle": "~3.0",
+        "sensio/framework-extra-bundle": "~3.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "~2.2",

@@ -44,6 +44,23 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
+# FOS Rest Bundle
+fos_rest:
+    format_listener:
+        rules:
+            - { path: '^/all', priorities: ['json'], prefer_extension: false }
+            - { path: '^/data', priorities: ['json'], prefer_extension: false }
+            - { path: '^/dbDriver', priorities: ['json'], prefer_extension: false }
+            - { path: '^/dbVersion', priorities: ['json'], prefer_extension: false }
+            - { path: '^/downloads', priorities: ['json'], prefer_extension: false }
+            - { path: '^/installSource', priorities: ['json'], prefer_extension: false }
+            - { path: '^/phpVersion', priorities: ['json'], prefer_extension: false }
+            - { path: '^/serverOs', priorities: ['json'], prefer_extension: false }
+            - { path: '^/version', priorities: ['json'], prefer_extension: false }
+            - { path: '^/', methods: ['POST'], priorities: ['json'], prefer_extension: false }
+            - { path: '^/', methods: ['GET'], priorities: ['html'], prefer_extension: false }
+    param_fetcher_listener: true
+
 parameters:
     supported_applications: ['Mautic']
     joomla_database:

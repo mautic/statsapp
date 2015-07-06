@@ -31,10 +31,10 @@ $view->extend('StatsAppBundle:Base:index.html.php') ?>
             data: [{
                 type: "doughnut",
                 dataPoints: [
-                    <?php foreach ($data['version'] as $point) : ?>
+                    <?php foreach ($data['version'] as $version => $count) : ?>
                     {
-                        y: <?php echo $point['count']; ?>,
-                        indexLabel: '<?php echo $point['name']; ?>'
+                        y: <?php echo $count; ?>,
+                        indexLabel: '<?php echo $version; ?>'
                     },
                     <?php endforeach; ?>
                 ]
@@ -50,10 +50,10 @@ $view->extend('StatsAppBundle:Base:index.html.php') ?>
             data: [{
                 type: "doughnut",
                 dataPoints: [
-	                <?php foreach ($data['phpVersion'] as $point) : ?>
+	                <?php foreach ($data['phpVersion'] as $version => $count) : ?>
                     {
-	                    y: <?php echo $point['count']; ?>,
-                        indexLabel: '<?php echo $point['name']; ?>'
+                        y: <?php echo $count; ?>,
+                        indexLabel: '<?php echo $version; ?>'
                     },
                     <?php endforeach; ?>
                 ]
