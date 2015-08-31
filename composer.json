@@ -29,7 +29,7 @@
         "symfony/twig-bundle": "2.7.*",
         "symfony/validator": "2.7.*",
         "symfony/yaml": "2.7.*",
-        "doctrine/orm": "~2.2,>=2.2.3",
+        "doctrine/orm": "~2.5,>=2.5.1",
         "doctrine/doctrine-bundle": "~1.2",
         "friendsofsymfony/rest-bundle": "~1.7",
         "jms/serializer-bundle": "~1.0",
