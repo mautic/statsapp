@@ -2,3 +2,10 @@ services:
     stats_app.stats.model:
         class: StatsAppBundle\Model\StatsModel
         arguments: [@doctrine.orm.default_entity_manager]
+
+    stats_app.twig_extension:
+        class: StatsAppBundle\Twig\StatsExtension
+        public: false
+        arguments: [@request_stack]
+        tags:
+            - { name: twig.extension }

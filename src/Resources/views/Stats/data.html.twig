@@ -1,67 +1,45 @@
 {% extends 'StatsAppBundle:Base:index.html.twig' %}
 
-{% block content %}
-    <h1>{{ 'Application Statistics for %app%'|trans({'%app%': application}) }}</h1>
+{% block pagetitle %}{{ 'Application Statistics'|trans }}{% endblock %}
 
+{% block content %}
     {% if data|length %}
-        {% set _colWidth = (data.version and data.phpVersion ? 'col-md-6' : 'col-md-12') %}
-        <div class="row">
+        <div class="post-list group">
+            <div class="post-row">
             {% if data.version %}
-                <div id="appVersions" class="{{ _colWidth }}" style="min-height:400px"></div>
+                <div class="post text-center">
+                    <h2 class="post-title">{{ 'Installed Versions'|trans }}</h2>
+                    <canvas id="mauticChartVersion" width="400" height="400"></canvas>
+                </div>
             {% endif %}
             {% if data.phpVersion %}
-                <div id="phpVersions" class="{{ _colWidth }}" style="min-height:400px"></div>
+                <div class="post text-center">
+                    <h2 class="post-title">{{ 'PHP Versions'|trans }}</h2>
+                    <canvas id="mauticChartPhp" width="400" height="400"></canvas>
+                </div>
             {% endif %}
         </div>
     {% else %}
-        <div class="alert alert-info">{{ 'No data was found for the %app% application'|trans({'%app%': application}) }}</div>
+        <div class="alert alert-info">{{ 'No statistics for Mautic are available'|trans }}</div>
     {% endif %}
 {% endblock %}
 
 {% block bodyJavaScript %}
     {{ parent() }}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/canvasjs/1.4.1/canvas.min.js"></script>
+    <script src="{{ asset('js/Chart.min.js') }}"></script>
 
     {% if data|length %}
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
                 {% if data.version %}
-                var appChart = new CanvasJS.Chart("appVersions", {
-                    title: {
-                        text: "{{ 'Installed Versions'|trans }}"
-                    },
-                    data: [{
-                        type: "doughnut",
-                        dataPoints: [
-                            {% for version, count in data.version %}
-                            {
-                                y: {{ count }},
-                                indexLabel: "{{ version }}"
-                            }{% if not loop.last %},{% endif %}
-                            {% endfor %}
-                        ]
-                    }]
-                });
-                appChart.render();
+                    var appData = [{% for version, count in data.version %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
+                    var ctxApp = document.getElementById('mauticChartVersion').getContext('2d');
+                    var appChart = new Chart(ctxApp).Doughnut(appData);
                 {% endif %}
                 {% if data.phpVersion %}
-                var phpChart = new CanvasJS.Chart("phpVersions", {
-                    title: {
-                        text: "{{ 'PHP Versions'|trans }}"
-                    },
-                    data: [{
-                        type: "doughnut",
-                        dataPoints: [
-                            {% for version, count in data.phpVersion %}
-                            {
-                                y: {{ count }},
-                                indexLabel: "{{ version }}"
-                            }{% if not loop.last %},{% endif %}
-                            {% endfor %}
-                        ]
-                    }]
-                });
-                phpChart.render();
+                    var phpData = [{% for version, count in data.phpVersion %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
+                    var ctxPhp = document.getElementById('mauticChartPhp').getContext('2d');
+                    var phpChart = new Chart(ctxPhp).Doughnut(phpData);
                 {% endif %}
             });
         </script>

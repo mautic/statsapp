@@ -86,7 +86,7 @@ class StatsController extends FOSRestController
         // Fetch our data from the POST
         $postData = [
             'application' => $request->request->get('application', null),
-            'version' => str_replace('-dev', '', $request->request->get('version', null)),
+            'version' => str_replace(['-dev', 'dev'], '', $request->request->get('version', null)),
             'phpVersion' => $request->request->get('phpVersion', null),
             'dbDriver' => $request->request->get('dbDriver', null),
             'dbVersion' => $request->request->get('dbVersion', null),
