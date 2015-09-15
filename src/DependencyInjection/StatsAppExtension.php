@@ -22,6 +22,11 @@ class StatsAppExtension extends Extension
 {
     /**
      * {@inheritdoc}
+     *
+     * @param array            $config    An array of configuration values
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     *
+     * @return void
      */
     public function load(array $configs, ContainerBuilder $container)
     {

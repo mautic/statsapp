@@ -59,7 +59,7 @@ class StatsModel
     /**
      * Save an entity
      *
-     * @param object $entity
+     * @param Stats $entity
      *
      * @return void
      */

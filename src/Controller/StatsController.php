@@ -52,6 +52,10 @@ class StatsController extends FOSRestController
         $data = $this->fetchData($request, $source);
 
         // The downloads source may send back a message for an error condition instead of data so check for this
+        if ($data instanceof Response) {
+            return $data;
+        }
+
         if ($source === 'downloads' && isset($data['message'])) {
             $view = $this->view($data, 500);
 
@@ -310,7 +314,7 @@ class StatsController extends FOSRestController
         $data = [];
 
         try {
-            $connection = DriverManager::getConnection($this->getParameter('joomla_database'));
+            $connection = $this->get('doctrine.dbal.joomla_connection');
         } catch (DBALException $exception) {
             $data['message'] = $this->get('translator')->trans('Could not establish database connection');
 

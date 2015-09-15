@@ -22,28 +22,18 @@ class StatsRepository extends EntityRepository
      */
     public function getAppData($application)
     {
-        $query = $this->createQueryBuilder($this->getTableAlias());
-        $query->where($query->expr()->eq($this->getTableAlias().'.application', ':application'))
+        $query = $this->createQueryBuilder('s');
+        $query->where($query->expr()->eq('s.application', ':application'))
             ->setParameter('application', $application);
 
         return $query->getQuery()->getArrayResult();
     }
 
     /**
-     * Retrieve the alias for the entity
-     *
-     * @return string
-     */
-    public function getTableAlias()
-    {
-        return 's';
-    }
-
-    /**
      * Save an entity through the repository
      *
-     * @param object $entity
-     * @param bool   $flush true by default; use false if persisting in batches
+     * @param Stats $entity
+     * @param bool  $flush true by default; use false if persisting in batches
      *
      * @return void
      */
