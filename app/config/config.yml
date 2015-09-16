@@ -73,3 +73,8 @@ fos_rest:
 
 parameters:
     supported_applications: ['Mautic']
+
+# Ekino New Relic Bundle
+ekino_new_relic:
+    enabled: true
+    application_name: Mautic Statistics Application
