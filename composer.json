@@ -29,6 +29,7 @@
         "symfony/twig-bundle": "2.7.*",
         "symfony/validator": "2.7.*",
         "symfony/yaml": "2.7.*",
+        "babdev/mautic-bundle": "dev-master",
         "doctrine/orm": "~2.5,>=2.5.1",
         "doctrine/doctrine-bundle": "~1.2",
         "ekino/newrelic-bundle": "~1.3",

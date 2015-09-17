@@ -8,8 +8,6 @@
 
 namespace StatsAppBundle\Twig;
 
-use Symfony\Component\HttpFoundation\RequestStack;
-
 /**
  * Class StatsExtension
  */
@@ -33,26 +31,11 @@ class StatsExtension extends \Twig_Extension
     ];
 
     /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
      * Array containing the keys for the used colors
      *
      * @var array
      */
     private $usedColors = [];
-
-    /**
-     * Constructor
-     *
-     * @param RequestStack $requestStack
-     */
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-    }
 
     /**
      * {@inheritdoc}
@@ -63,7 +46,6 @@ class StatsExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('chart_color', [$this, 'getChartColor']),
-            new \Twig_SimpleFunction('mautic_tracking', [$this, 'mauticTrackingPixel']),
         ];
     }
 
@@ -107,28 +89,5 @@ class StatsExtension extends \Twig_Extension
         }
 
         return $color;
-    }
-
-    /**
-     * Render the Mautic tracking pixel
-     *
-     * @return string
-     */
-    public function mauticTrackingPixel()
-    {
-        $request = $this->requestStack->getCurrentRequest();
-
-        $currentUrl = $request->getUri();
-
-        $attrs = [
-            'title' => 'Mautic Application Statistics',
-            'language' => $request->getLocale(),
-            'referrer' => $request->headers->get('referer', $currentUrl),
-            'url' => $currentUrl
-        ];
-
-        $trackingData = urlencode(base64_encode(serialize($attrs)));
-
-        return '<img style="display:none" src="https://www.mautic.org/m/mtracking.gif?d='.$trackingData.'" />';
     }
 }

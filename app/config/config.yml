@@ -78,3 +78,8 @@ parameters:
 ekino_new_relic:
     enabled: true
     application_name: Mautic Statistics Application
+
+# BabDev Mautic Bundle
+babdev_mautic:
+    instance:
+        url: https://www.mautic.org/m

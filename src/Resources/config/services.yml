@@ -6,6 +6,5 @@ services:
     stats_app.twig_extension:
         class: StatsAppBundle\Twig\StatsExtension
         public: false
-        arguments: [@request_stack]
         tags:
             - { name: twig.extension }

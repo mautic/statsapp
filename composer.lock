@@ -4,8 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab811bb4e788d4af0439d496d8e760ec",
+    "hash": "a651579071f1d7ba256c5fa160b7262b",
     "packages": [
+        {
+            "name": "babdev/mautic-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BabDev/BabDevMauticBundle.git",
+                "reference": "f1bd82870d059a8bec467296a3eb526380ae24ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BabDev/BabDevMauticBundle/zipball/f1bd82870d059a8bec467296a3eb526380ae24ee",
+                "reference": "f1bd82870d059a8bec467296a3eb526380ae24ee",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "symfony/config": "~2.7",
+                "symfony/dependency-injection": "~2.7",
+                "symfony/http-foundation": "~2.7",
+                "symfony/http-kernel": "~2.7"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "BabDev\\MauticBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Symfony Bundle integrating support for Mautic",
+            "time": "2015-09-17 19:01:39"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.7",
@@ -285,16 +321,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "628c2256b646ae2417d44e063bce8aec5199d48d"
+                "reference": "01dbcbc5cd0a913d751418e635434a18a2f2a75c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/628c2256b646ae2417d44e063bce8aec5199d48d",
-                "reference": "628c2256b646ae2417d44e063bce8aec5199d48d",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/01dbcbc5cd0a913d751418e635434a18a2f2a75c",
+                "reference": "01dbcbc5cd0a913d751418e635434a18a2f2a75c",
                 "shasum": ""
             },
             "require": {
@@ -352,7 +388,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2015-01-12 21:52:47"
+            "time": "2015-09-16 16:29:33"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -4655,7 +4691,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "babdev/mautic-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
