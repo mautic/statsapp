@@ -59,7 +59,7 @@
                     var dbChart = new Chart(ctxDb).Doughnut(dbData);
                 {% endif %}
                 {% if data.serverOs %}
-                    var serverData = [{% for version, count in data.serverOs %}{value: {{ count }}, label: "{{ version|trans }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
+                    var serverData = [{% for version, count in data.serverOs %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
                     var ctxServer = document.getElementById('mauticChartServer').getContext('2d');
                     var serverChart = new Chart(ctxServer).Doughnut(serverData);
                 {% endif %}
