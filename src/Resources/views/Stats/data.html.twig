@@ -3,67 +3,70 @@
 {% block pagetitle %}{{ 'Application Statistics'|trans }}{% endblock %}
 
 {% block content %}
-    {% if data|length %}
-        <div class="post-list group">
-            <div class="post-row">
-            {% if data.version %}
-                <div class="post text-center">
-                    <h2 class="post-title">{{ 'Installed Versions'|trans }}</h2>
-                    <canvas id="mauticChartVersion" width="400" height="400"></canvas>
-                </div>
-            {% endif %}
-            {% if data.phpVersion %}
-                <div class="post text-center">
-                    <h2 class="post-title">{{ 'PHP Versions'|trans }}</h2>
-                    <canvas id="mauticChartPhp" width="400" height="400"></canvas>
-                </div>
-            {% endif %}
-            {% if data.dbDriver %}
-                <div class="post text-center">
-                    <h2 class="post-title">{{ 'Database Drivers'|trans }}</h2>
-                    <canvas id="mauticChartDb" width="400" height="400"></canvas>
-                </div>
-            {% endif %}
-            {% if data.serverOs %}
-                <div class="post text-center">
-                    <h2 class="post-title">{{ 'Server Operating Systems'|trans }}</h2>
-                    <canvas id="mauticChartServer" width="400" height="400"></canvas>
-                </div>
-            {% endif %}
-        </div>
-    {% else %}
-        <div class="alert alert-info">{{ 'No statistics for Mautic are available'|trans }}</div>
-    {% endif %}
+                            {%- if data|length %}
+
+                            <div class="post-list group">
+                                <div class="post-row">
+                                    {% if data.version -%}
+                                    <div class="post text-center">
+                                        <h2 class="post-title">{{ 'Installed Versions'|trans }}</h2>
+                                        <canvas id="mauticChartVersion" width="400" height="400"></canvas>
+                                    </div>
+                                    {% endif -%}
+                                    {% if data.phpVersion -%}
+                                    <div class="post text-center">
+                                        <h2 class="post-title">{{ 'PHP Versions'|trans }}</h2>
+                                        <canvas id="mauticChartPhp" width="400" height="400"></canvas>
+                                    </div>
+                                    {% endif -%}
+                                    {% if data.dbDriver -%}
+                                    <div class="post text-center">
+                                        <h2 class="post-title">{{ 'Database Drivers'|trans }}</h2>
+                                        <canvas id="mauticChartDb" width="400" height="400"></canvas>
+                                    </div>
+                                    {% endif -%}
+                                    {% if data.serverOs -%}
+                                    <div class="post text-center">
+                                        <h2 class="post-title">{{ 'Server Operating Systems'|trans }}</h2>
+                                        <canvas id="mauticChartServer" width="400" height="400"></canvas>
+                                    </div>
+                                    {%- endif %}
+
+                                </div>
+                            </div>
+                            {% else -%}
+                            <div class="alert alert-info">{{ 'No statistics for Mautic are available'|trans }}</div>
+                            {% endif %}
 {% endblock %}
 
-{% block bodyJavaScript %}
-    {{ parent() }}
-    <script src="{{ asset('js/Chart.min.js') }}"></script>
+{% block bodyJavaScript -%}
+        {{ parent() }}
+        <script src="{{ asset('js/Chart.min.js') }}"></script>
 
-    {% if data|length %}
-        <script type="text/javascript">
+        {% if data|length -%}
+        <script>
             jQuery(document).ready(function ($) {
-                {% if data.version %}
-                    var appData = [{% for version, count in data.version %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
-                    var ctxApp = document.getElementById('mauticChartVersion').getContext('2d');
-                    var appChart = new Chart(ctxApp).Doughnut(appData);
-                {% endif %}
-                {% if data.phpVersion %}
-                    var phpData = [{% for version, count in data.phpVersion %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
-                    var ctxPhp = document.getElementById('mauticChartPhp').getContext('2d');
-                    var phpChart = new Chart(ctxPhp).Doughnut(phpData);
-                {% endif %}
-                {% if data.dbDriver %}
-                    var dbData = [{% for version, count in data.dbDriver %}{value: {{ count }}, label: "{{ version|trans }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
-                    var ctxDb = document.getElementById('mauticChartDb').getContext('2d');
-                    var dbChart = new Chart(ctxDb).Doughnut(dbData);
-                {% endif %}
-                {% if data.serverOs %}
-                    var serverData = [{% for version, count in data.serverOs %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
-                    var ctxServer = document.getElementById('mauticChartServer').getContext('2d');
-                    var serverChart = new Chart(ctxServer).Doughnut(serverData);
-                {% endif %}
+                {% if data.version -%}
+                var appData = [{% for version, count in data.version %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
+                var ctxApp = document.getElementById('mauticChartVersion').getContext('2d');
+                var appChart = new Chart(ctxApp).Doughnut(appData);
+                {% endif -%}
+                {% if data.phpVersion -%}
+                var phpData = [{% for version, count in data.phpVersion %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
+                var ctxPhp = document.getElementById('mauticChartPhp').getContext('2d');
+                var phpChart = new Chart(ctxPhp).Doughnut(phpData);
+                {% endif -%}
+                {% if data.dbDriver -%}
+                var dbData = [{% for version, count in data.dbDriver %}{value: {{ count }}, label: "{{ version|trans }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
+                var ctxDb = document.getElementById('mauticChartDb').getContext('2d');
+                var dbChart = new Chart(ctxDb).Doughnut(dbData);
+                {% endif -%}
+                {% if data.serverOs -%}
+                var serverData = [{% for version, count in data.serverOs %}{value: {{ count }}, label: "{{ version }}", color: "{{ chart_color() }}"}{% if not loop.last %},{% endif %}{% endfor %}]
+                var ctxServer = document.getElementById('mauticChartServer').getContext('2d');
+                var serverChart = new Chart(ctxServer).Doughnut(serverData);
+                {% endif -%}
             });
         </script>
-    {% endif %}
-{% endblock %}
+        {% endif -%}
+{% endblock -%}

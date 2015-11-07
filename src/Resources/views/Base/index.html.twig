@@ -207,13 +207,14 @@
                 <div class="container-inner">
                     <section class="content">
                         {% set _pagetitle = block('pagetitle') %}
-                        {% if _pagetitle is not empty %}
-                            <div class="page-title pad group">
-                                <h2>{{ _pagetitle|raw }}</h2>
-                            </div>
-                        {% endif %}
+                        {%- if _pagetitle is not empty -%}
+                        <div class="page-title pad group">
+                            <h2>{{ _pagetitle|raw }}</h2>
+                        </div>
+                        {% endif -%}
                         <div class="pad group">
-                            {% block content %}{% endblock %}
+                            {%- block content %}{% endblock %}
+
                         </div>
                     </section>
                 </div>
@@ -292,15 +293,15 @@
                 </section>
             </footer>
         </div>
-        {% block bodyJavaScript %}
-            {{ babdev_mautic_tracking(block('title'))|raw }}
-            <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-            <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-            <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-                ga('create', 'UA-55195964-1', 'auto');
-                ga('send', 'pageview');
-            </script>
+        {% block bodyJavaScript -%}
+        {{ babdev_mautic_tracking(block('title'))|raw }}
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-55195964-1', 'auto');
+            ga('send', 'pageview');
+        </script>
         {% endblock %}
     </body>
 </html>
