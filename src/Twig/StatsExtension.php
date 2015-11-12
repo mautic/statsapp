@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsAppBundle\Twig;
+namespace Mautic\StatsBundle\Twig;
 
 /**
  * Class StatsExtension

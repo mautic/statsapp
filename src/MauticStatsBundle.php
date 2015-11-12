@@ -6,13 +6,13 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsAppBundle;
+namespace Mautic\StatsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class StatsAppBundle
+ * Class MauticStatsBundle
  */
-class StatsAppBundle extends Bundle
+class MauticStatsBundle extends Bundle
 {
 }

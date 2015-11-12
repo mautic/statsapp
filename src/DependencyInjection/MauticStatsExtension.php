@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsAppBundle\DependencyInjection;
+namespace Mautic\StatsBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class StatsAppExtension extends Extension
+class MauticStatsExtension extends Extension
 {
     /**
      * {@inheritdoc}

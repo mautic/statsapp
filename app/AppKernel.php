@@ -30,7 +30,7 @@ class AppKernel extends Kernel
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new StatsAppBundle\StatsAppBundle(),
+            new Mautic\StatsBundle\MauticStatsBundle(),
         ];
 
         // Bundles only loaded in dev or test envs

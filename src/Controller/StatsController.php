@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsAppBundle\Controller;
+namespace Mautic\StatsBundle\Controller;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
@@ -63,7 +63,7 @@ class StatsController extends FOSRestController
         }
 
         $view = $this->view($data, 200)
-            ->setTemplate('StatsAppBundle:Stats:data.html.twig')
+            ->setTemplate('MauticStatsBundle:Stats:data.html.twig')
             ->setTemplateData(
                 [
                     'application' => 'Mautic',
@@ -122,8 +122,8 @@ class StatsController extends FOSRestController
             return $this->handleView($view);
         }
 
-        /** @var \StatsAppBundle\Model\StatsModel $model */
-        $model = $this->get('stats_app.stats.model');
+        /** @var \Mautic\StatsBundle\Model\StatsModel $model */
+        $model = $this->get('mautic_stats.stats.model');
 
         $entity = $model->getEntity($postData['instanceId'], $postData['application']);
 
@@ -165,8 +165,8 @@ class StatsController extends FOSRestController
             return $this->fetchDownloadData();
         }
 
-        /** @var \StatsAppBundle\Entity\StatsRepository $repo */
-        $repo = $this->getDoctrine()->getRepository('StatsAppBundle:Stats');
+        /** @var \Mautic\StatsBundle\Entity\StatsRepository $repo */
+        $repo = $this->getDoctrine()->getRepository('MauticStatsBundle:Stats');
         $appData = $repo->getAppData('Mautic');
 
         if (empty($appData)) {

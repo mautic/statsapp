@@ -6,10 +6,10 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsAppBundle\Model;
+namespace Mautic\StatsBundle\Model;
 
 use Doctrine\ORM\EntityManager;
-use StatsAppBundle\Entity\Stats;
+use Mautic\StatsBundle\Entity\Stats;
 
 /**
  * Class StatsModel
@@ -49,11 +49,11 @@ class StatsModel
     /**
      * Retrieves an entity repository
      *
-     * @return \StatsAppBundle\Entity\StatsRepository
+     * @return \Mautic\StatsBundle\Entity\StatsRepository
      */
     public function getRepository()
     {
-        return $this->em->getRepository('StatsAppBundle:Stats');
+        return $this->em->getRepository('MauticStatsBundle:Stats');
     }
 
     /**

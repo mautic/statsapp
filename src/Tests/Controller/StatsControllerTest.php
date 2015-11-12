@@ -6,18 +6,18 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsAppBundle\Tests\Controller;
+namespace Mautic\StatsBundle\Tests\Controller;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
- * Test class for \StatsApp\Controller\StatsController
+ * Test class for \Mautic\StatsBundle\Controller\StatsController
  */
 class StatsController extends WebTestCase
 {
     public function testLegacyGetDataActionDefaultBehavior()
     {
-        $fixtures = ['StatsAppBundle\Tests\Fixtures\LoadStatsData'];
+        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
         $this->loadFixtures($fixtures);
 
         $client = static::createClient();
@@ -33,7 +33,7 @@ class StatsController extends WebTestCase
 
     public function testLegacyGetDataActionSingleSource()
     {
-        $fixtures = ['StatsAppBundle\Tests\Fixtures\LoadStatsData'];
+        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
         $this->loadFixtures($fixtures);
 
         $client = static::createClient();
@@ -49,7 +49,7 @@ class StatsController extends WebTestCase
 
     public function testGetDataActionDefaultBehavior()
     {
-        $fixtures = ['StatsAppBundle\Tests\Fixtures\LoadStatsData'];
+        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
         $this->loadFixtures($fixtures);
 
         $client = static::createClient();
@@ -65,7 +65,7 @@ class StatsController extends WebTestCase
 
     public function testGetDataActionSingleSource()
     {
-        $fixtures = ['StatsAppBundle\Tests\Fixtures\LoadStatsData'];
+        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
         $this->loadFixtures($fixtures);
 
         $client = static::createClient();
@@ -81,7 +81,7 @@ class StatsController extends WebTestCase
 
     public function testGetDataActionSingleSourceWithAuthorizationHeader()
     {
-        $fixtures = ['StatsAppBundle\Tests\Fixtures\LoadStatsData'];
+        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
         $this->loadFixtures($fixtures);
 
         $client = static::createClient();
@@ -215,7 +215,7 @@ class StatsController extends WebTestCase
 
     public function testViewAction()
     {
-        $fixtures = ['StatsAppBundle\Tests\Fixtures\LoadStatsData'];
+        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
         $this->loadFixtures($fixtures);
 
         $client = static::createClient();

@@ -5,7 +5,7 @@
     "description": "Application for collecting and processing statistics from remote applications",
     "autoload": {
         "psr-4": {
-            "StatsAppBundle\\": "src/"
+            "Mautic\\StatsBundle\\": "src/"
         }
     },
     "require": {

@@ -6,11 +6,11 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsAppBundle\Tests\Fixtures;
+namespace Mautic\StatsBundle\Tests\Fixtures;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use StatsAppBundle\Entity\Stats;
+use Mautic\StatsBundle\Entity\Stats;
 
 /**
  * Class LoadStatsData

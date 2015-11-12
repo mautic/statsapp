@@ -1,10 +1,10 @@
 services:
-    stats_app.stats.model:
-        class: StatsAppBundle\Model\StatsModel
+    mautic_stats.stats.model:
+        class: Mautic\StatsBundle\Model\StatsModel
         arguments: [@doctrine.orm.default_entity_manager]
 
-    stats_app.twig_extension:
-        class: StatsAppBundle\Twig\StatsExtension
+    mautic_stats.twig_extension:
+        class: Mautic\StatsBundle\Twig\StatsExtension
         public: false
         tags:
             - { name: twig.extension }

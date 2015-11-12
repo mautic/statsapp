@@ -1,14 +1,14 @@
-stats_app_index:
+mautic_stats_index:
     type: rest
-    resource: StatsAppBundle\Controller\StatsController
+    resource: @MauticStatsBundle/Controller/StatsController.php
 
 # Legacy GET handler
-stats_app_data:
+mautic_stats_data:
     path:     /data
-    defaults: { _controller: StatsAppBundle:Stats:data, _format: json }
+    defaults: { _controller: MauticStatsBundle:Stats:data, _format: json }
 
 # Legacy POST handler
-stats_app_post:
+mautic_stats_post:
     path:     /send
-    defaults: { _controller: StatsAppBundle:Stats:postData }
+    defaults: { _controller: MauticStatsBundle:Stats:postData }
     methods:  [POST]

@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace StatsAppBundle\Entity;
+namespace Mautic\StatsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Stats table
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="StatsAppBundle\Entity\StatsRepository")
+ * @ORM\Entity(repositoryClass="Mautic\StatsBundle\Entity\StatsRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Stats
