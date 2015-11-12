@@ -6,6 +6,10 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
+
 date_default_timezone_set('UTC');
 
 // if you don't want to setup permissions the proper way, just uncomment the following PHP line
@@ -14,12 +18,10 @@ date_default_timezone_set('UTC');
 
 set_time_limit(0);
 
-require_once __DIR__ . '/bootstrap.php.cache';
-require_once __DIR__ . '/AppKernel.php';
-
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Debug\Debug;
+/**
+ * @var Composer\Autoload\ClassLoader $loader
+ */
+$loader = require __DIR__.'/autoload.php';
 
 $input = new ArgvInput();
 $env   = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
@@ -27,6 +29,8 @@ $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('-
 
 if ($debug) {
     Debug::enable();
+} else {
+    include_once __DIR__.'/bootstrap.php.cache';
 }
 
 $kernel      = new AppKernel($env, $debug);
