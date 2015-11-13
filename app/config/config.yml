@@ -68,6 +68,7 @@ fos_rest:
             - { path: '^/serverOs', priorities: ['json'], prefer_extension: false }
             - { path: '^/version', priorities: ['json'], prefer_extension: false }
             - { path: '^/', methods: ['POST'], priorities: ['json'], prefer_extension: false }
+            - { path: '^/send', methods: ['POST'], priorities: ['json'], prefer_extension: false }
             - { path: '^/', methods: ['GET'], priorities: ['html'], prefer_extension: false }
     param_fetcher_listener: true
 
