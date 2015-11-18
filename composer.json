@@ -14,25 +14,25 @@
     },
     "require": {
         "php": ">=5.4",
-        "symfony/class-loader": "2.7.*",
-        "symfony/config": "2.7.*",
-        "symfony/console": "2.7.*",
-        "symfony/dependency-injection": "2.7.*",
-        "symfony/event-dispatcher": "2.7.*",
-        "symfony/finder": "2.7.*",
-        "symfony/framework-bundle": "2.7.*",
-        "symfony/http-foundation": "2.7.*",
-        "symfony/http-kernel": "2.7.*",
+        "symfony/class-loader": "2.8.*",
+        "symfony/config": "2.8.*",
+        "symfony/console": "2.8.*",
+        "symfony/dependency-injection": "2.8.*",
+        "symfony/event-dispatcher": "2.8.*",
+        "symfony/finder": "2.8.*",
+        "symfony/framework-bundle": "2.8.*",
+        "symfony/http-foundation": "2.8.*",
+        "symfony/http-kernel": "2.8.*",
         "symfony/monolog-bundle": "~2.4",
-        "symfony/options-resolver": "2.7.*",
-        "symfony/routing": "2.7.*",
-        "symfony/security": "2.7.*",
-        "symfony/templating": "2.7.*",
-        "symfony/translation": "2.7.*",
-        "symfony/twig-bridge": "2.7.*",
-        "symfony/twig-bundle": "2.7.*",
-        "symfony/validator": "2.7.*",
-        "symfony/yaml": "2.7.*",
+        "symfony/options-resolver": "2.8.*",
+        "symfony/routing": "2.8.*",
+        "symfony/security": "2.8.*",
+        "symfony/templating": "2.8.*",
+        "symfony/translation": "2.8.*",
+        "symfony/twig-bridge": "2.8.*",
+        "symfony/twig-bundle": "2.8.*",
+        "symfony/validator": "2.8.*",
+        "symfony/yaml": "2.8.*",
         "babdev/mautic-bundle": "dev-master",
         "doctrine/orm": "~2.5,>=2.5.1",
         "doctrine/doctrine-bundle": "~1.2",
@@ -47,26 +47,28 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "~2.2",
         "liip/functional-test-bundle": "~1.0",
-        "sensio/generator-bundle": "~2.3",
-        "symfony/css-selector": "2.7.*",
-        "symfony/debug": "2.7.*",
-        "symfony/dom-crawler": "2.7.*",
-        "symfony/phpunit-bridge": "2.7.* >=2.7.1",
-        "symfony/web-profiler-bundle": "2.7.*",
+        "sensio/generator-bundle": "~3.0",
+        "symfony/css-selector": "2.8.*",
+        "symfony/debug": "2.8.*",
+        "symfony/dom-crawler": "2.8.*",
+        "symfony/phpunit-bridge": "2.8.* >=2.7.1",
+        "symfony/web-profiler-bundle": "2.8.*",
         "phpunit/phpunit": "~4.0"
     },
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
         "post-update-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ]
     },
     "config": {
@@ -74,6 +76,8 @@
     },
     "extra": {
         "symfony-app-dir": "app",
-        "symfony-web-dir": "www"
-    }
+        "symfony-web-dir": "www",
+        "symfony-assets-install": "relative"
+    },
+    "minimum-stability": "beta"
 }

@@ -1,6 +1,6 @@
 mautic_stats_index:
     type: rest
-    resource: @MauticStatsBundle/Controller/StatsController.php
+    resource: "@MauticStatsBundle/Controller/StatsController.php"
 
 # Legacy GET handler
 mautic_stats_data:
