@@ -314,7 +314,8 @@ class StatsController extends FOSRestController
         $data = [];
 
         try {
-            $connection = $this->get('doctrine.dbal.joomla_connection');
+            /** @var \Doctrine\DBAL\Connection $connection */
+            $connection = $this->getDoctrine()->getConnection('joomla');
         } catch (DBALException $exception) {
             $data['message'] = $this->get('translator')->trans('Could not establish database connection');
 

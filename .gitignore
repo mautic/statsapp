@@ -1,16 +1,19 @@
-/www/bundles/
-/app/bootstrap.php.cache
-/app/cache/*
-/app/coverage/
 /app/config/parameters.yml
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
-/app/phpunit.xml
 /build/
+/phpunit.xml
+/var/*
+!/var/cache
+/var/cache/*
+!var/cache/.gitkeep
+!/var/logs
+/var/logs/*
+!var/logs/.gitkeep
+!/var/sessions
+/var/sessions/*
+!var/sessions/.gitkeep
+!var/SymfonyRequirements.php
 /vendor/
-/bin/
-/composer.phar
+/web/bundles/
 
 # IDE & OS Specific Sources #
 .DS_Store

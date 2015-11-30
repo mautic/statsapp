@@ -7,6 +7,7 @@ framework:
         storage_id: session.storage.filesystem
     profiler:
         collect: false
+    validation: { enable_annotations: true }
 
 web_profiler:
     toolbar: false

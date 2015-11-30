@@ -1,7 +1,7 @@
 services:
     mautic_stats.stats.model:
         class: Mautic\StatsBundle\Model\StatsModel
-        arguments: [@doctrine.orm.default_entity_manager]
+        arguments: ["@doctrine.orm.default_entity_manager"]
 
     mautic_stats.twig_extension:
         class: Mautic\StatsBundle\Twig\StatsExtension
