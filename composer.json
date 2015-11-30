@@ -12,6 +12,11 @@
             "app/AppKernel.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Mautic\\StatsBundle\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "php": ">=5.5.9",
         "symfony/class-loader": "2.8.*",
@@ -71,11 +76,11 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ]
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "extra": {
         "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-tests-dir": "tests",
+        "symfony-var-dir": "var",
         "symfony-web-dir": "www",
         "symfony-assets-install": "relative"
     }
