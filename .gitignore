@@ -13,7 +13,7 @@
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 /vendor/
-/www/bundles/
+/web/bundles/
 
 # IDE & OS Specific Sources #
 .DS_Store

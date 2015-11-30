@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9f359621df51c1868f831bc99dc1469c",
-    "content-hash": "95c99c05bfa1feea25162f2558175a10",
+    "hash": "3f8a69f2788e4c2a1ae3d750de0be0f2",
+    "content-hash": "c0eb784008acafe104ce6a115faac173",
     "packages": [
         {
             "name": "babdev/mautic-bundle",
