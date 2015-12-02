@@ -50,7 +50,6 @@ class StatsController extends FOSRestController
     public function getDataAction(Request $request, $source = 'all')
     {
         $data = $this->fetchData($request, $source);
-        var_dump($data);die;
 
         // The downloads source may send back a message for an error condition instead of data so check for this
         if ($data instanceof Response) {
