@@ -4,44 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3f8a69f2788e4c2a1ae3d750de0be0f2",
-    "content-hash": "c0eb784008acafe104ce6a115faac173",
+    "hash": "3f5f9adb5a4a57d25b112dd5b0afa561",
+    "content-hash": "75f4c3db3baf92b1b9719eac84bf869f",
     "packages": [
         {
             "name": "babdev/mautic-bundle",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BabDev/BabDevMauticBundle.git",
-                "reference": "76950258779ff77566732d8df151de8e4034ed45"
+                "reference": "8f373e91bfe47d804bb0e2f840a781a6708b802a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BabDev/BabDevMauticBundle/zipball/76950258779ff77566732d8df151de8e4034ed45",
-                "reference": "76950258779ff77566732d8df151de8e4034ed45",
+                "url": "https://api.github.com/repos/BabDev/BabDevMauticBundle/zipball/8f373e91bfe47d804bb0e2f840a781a6708b802a",
+                "reference": "8f373e91bfe47d804bb0e2f840a781a6708b802a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9"
-            },
-            "require-dev": {
+                "php": ">=5.3.9",
                 "symfony/config": "~2.7|~3.0",
                 "symfony/dependency-injection": "~2.7|~3.0",
                 "symfony/http-foundation": "~2.7|~3.0",
-                "symfony/http-kernel": "~2.7|~3.0"
+                "symfony/http-kernel": "~2.7|~3.0",
+                "symfony/templating": "~2.7|~3.0",
+                "twig/twig": "~1.23|~2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8|~5.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "BabDev\\MauticBundle\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Symfony Bundle integrating support for Mautic",
-            "time": "2015-11-12 15:40:19"
+            "time": "2015-12-02 01:43:21"
         },
         {
             "name": "doctrine/annotations",
@@ -5302,9 +5314,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "babdev/mautic-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
