@@ -50,6 +50,7 @@ class StatsController extends FOSRestController
     public function getDataAction(Request $request, $source = 'all')
     {
         $data = $this->fetchData($request, $source);
+        var_dump($data);die;
 
         // The downloads source may send back a message for an error condition instead of data so check for this
         if ($data instanceof Response) {
@@ -240,6 +241,8 @@ class StatsController extends FOSRestController
                             $sanitizedData[$version] = round($count / $total, 4) * 100;
                         }
 
+                        ksort($sanitizedData);
+
                         $data[$key] = $sanitizedData;
 
                         break;
@@ -270,12 +273,27 @@ class StatsController extends FOSRestController
                             $sanitizedData[$os] = round($count / $total, 4) * 100;
                         }
 
+                        ksort($sanitizedData);
+
                         $data[$key] = $sanitizedData;
 
                         break;
 
                     case 'dbDriver':
                     case 'version':
+                        // For now, group by the object name and figure out the percentages
+                        $sanitizedData = [];
+
+                        foreach ($dataGroup as $row) {
+                            $sanitizedData[$row['name']] = round($row['count'] / $total, 4) * 100;
+                        }
+
+                        ksort($sanitizedData);
+
+                        $data[$key] = $sanitizedData;
+
+                        break;
+
                     default:
                         // For now, group by the object name and figure out the percentages
                         $sanitizedData = [];
@@ -283,6 +301,8 @@ class StatsController extends FOSRestController
                         foreach ($dataGroup as $row) {
                             $sanitizedData[$row['name']] = round($row['count'] / $total, 4) * 100;
                         }
+
+                        ksort($sanitizedData);
 
                         $data[$key] = $sanitizedData;
 
