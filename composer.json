@@ -76,5 +76,10 @@
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
         "symfony-assets-install": "relative"
+    },
+    "config": {
+        "platform": {
+            "php": "5.5.9"
+        }
     }
 }
