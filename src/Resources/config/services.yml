@@ -3,6 +3,10 @@ services:
         class: Mautic\StatsBundle\Model\StatsModel
         arguments: ["@doctrine.orm.default_entity_manager"]
 
+    mautic_stats.mautic3upgrade.model:
+        class: Mautic\StatsBundle\Model\Mautic3UpgradeStatsModel
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
     mautic_stats.twig_extension:
         class: Mautic\StatsBundle\Twig\StatsExtension
         public: false

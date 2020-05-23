@@ -150,6 +150,81 @@ class StatsController extends FOSRestController
     }
 
     /**
+     * Receives the POSTed data from M2 to M3 upgrade script
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Post("/")
+     */
+    public function postMautic3UpgradeDataAction(Request $request)
+    {
+        $data = [];
+
+        // Fetch our data from the POST
+        $postData = [
+            'application' => $request->request->get('application', null),
+            'version' => str_replace(['-dev', 'dev'], '', $request->request->get('version', null)),
+            'phpVersion' => $request->request->get('phpVersion', null),
+            'dbDriver' => $request->request->get('dbDriver', null),
+            'dbVersion' => $request->request->get('dbVersion', null),
+            'instanceId' => $request->request->get('instanceId', null),
+            'serverOs' => $request->request->get('serverOs', null),
+            'upgradeStatus' => $request->request->get('upgradeStatus', null) // possible values started, failed, succeeded
+        ];
+
+        // Check for null values on the app, version, and instance; everything else we can do without
+        if ($postData['application'] === null || $postData['version'] === null || $postData['instanceId'] === null || $postData['upgradeStatus'] === null) {
+            $data['message'] = $this->get('translator')->trans('Missing data from the POST request');
+
+            $view = $this->view($data, 500);
+
+            return $this->handleView($view);
+        }
+
+        // Check if the application is supported
+        $supported = $this->getParameter('supported_applications');
+
+        if (!in_array($postData['application'], $supported)) {
+            $data['message'] = $this->get('translator')->trans(
+                'The %app% application is not supported',
+                ['%app%' => $postData['application']]
+            );
+
+            $view = $this->view($data, 500);
+
+            return $this->handleView($view);
+        }
+
+        /** @var \Mautic\StatsBundle\Model\StatsModel $model */
+        $model = $this->get('mautic_stats.mautic3upgrade.model');
+
+        $entity = $model->getEntity($postData['instanceId'], $postData['application']);
+
+        // Loop over the post data and set it to the entity
+        foreach ($postData as $key => $value) {
+            $method = 'set'.ucwords($key);
+            $entity->$method($value);
+        }
+
+        // Save the data
+        try {
+            $model->saveEntity($entity);
+
+            $data['message'] = $this->get('translator')->trans('Data saved successfully');
+            $code = 200;
+        } catch (\Exception $exception) {
+            $data['message'] = $this->get('translator')->trans('An error occurred while saving the data');
+            $code = 500;
+        }
+
+        $view = $this->view($data, $code);
+
+        return $this->handleView($view);
+    }
+
+    /**
      * Fetches the requested source data for the application
      *
      * @param Request $request

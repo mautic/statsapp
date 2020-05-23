@@ -24,7 +24,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
-            new BabDev\MauticBundle\BabDevMauticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Ekino\Bundle\NewRelicBundle\EkinoNewRelicBundle(),
             new FOS\RestBundle\FOSRestBundle(),
