@@ -171,7 +171,8 @@ class StatsController extends FOSRestController
             'dbVersion' => $request->request->get('dbVersion', null),
             'instanceId' => $request->request->get('instanceId', null),
             'serverOs' => $request->request->get('serverOs', null),
-            'upgradeStatus' => $request->request->get('upgradeStatus', null) // possible values started, failed, succeeded
+            'upgradeStatus' => $request->request->get('upgradeStatus', null), // possible values started, failed, succeeded
+            'errorCode' => $request->request->get('errorCode', null),
         ];
 
         // Check for null values on the app, version, and instance; everything else we can do without
@@ -246,7 +247,7 @@ class StatsController extends FOSRestController
 
         if (empty($appData)) {
             throw $this->createNotFoundException(
-                $this->get('translator')->trans('No data was found for the %app% application', ['%app%' => $app])
+                $this->get('translator')->trans('No data was found for the %app% application', ['%app%' => 'Mautic'])
             );
         }
 

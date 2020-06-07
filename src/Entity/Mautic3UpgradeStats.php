@@ -93,6 +93,13 @@ class Mautic3UpgradeStats
     private $upgradeStatus;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="error_code", type="text", nullable=true)
+     */
+    private $errorCode;
+
+    /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
@@ -326,5 +333,29 @@ class Mautic3UpgradeStats
     public function getUpgradeStatus()
     {
         return $this->upgradeStatus;
+    }
+
+    /**
+     * Set errorCode
+     *
+     * @param string $errorCode
+     *
+     * @return Mautic3UpgradeStats
+     */
+    public function setErrorCode($errorCode)
+    {
+        $this->errorCode = $errorCode;
+
+        return $this;
+    }
+
+    /**
+     * Get errorCode
+     *
+     * @return string
+     */
+    public function getErrorCode()
+    {
+        return $this->errorCode;
     }
 }
