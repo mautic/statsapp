@@ -1,0 +1,20 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host:
+    database_port:
+    database_name:
+    database_user:
+    database_password:
+    locale: en
+    secret:
+    debug_toolbar:
+    debug_redirects:
+    joomla_dbname:
+    joomla_driver: mysqli
+    joomla_host: 127.0.0.1
+    joomla_password:
+    joomla_port:
+    joomla_user:
+    joomla_dbprefix:
+    mautic_raw_header: Mautic

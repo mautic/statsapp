@@ -27,6 +27,7 @@ before-install:
 # Create database, schema and fixtures
 install:
   - composer install
+  - cp app/config/parameters.yml.dist app/config/parameters.yml
 
 # Run script
 script:
