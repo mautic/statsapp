@@ -30,13 +30,13 @@
                                         <canvas id="mauticChartServer" width="200" height="200"></canvas>
                                     </div>
                                     {%- endif %}
-                                    {% if data.upgradeStatus -%}
+                                    {% if data.upgradeStatus is defined -%}
                                     <div class="col-12 col-md-6 col-xl-3 mb-4" style="text-align: center">
                                         <h3>{{ 'Upgrade status'|trans }}</h3>
                                         <canvas id="mauticChartUpgradeStatus" width="200" height="200"></canvas>
                                     </div>
                                     {%- endif %}
-                                    {% if data.errorCode -%}
+                                    {% if data.errorCode is defined -%}
                                     <div class="col-12 col-md-6 col-xl-3 mb-4" style="text-align: center">
                                         <h3>{{ 'Error code (if any)'|trans }}</h3>
                                         <canvas id="mauticChartErrorCode" width="200" height="200"></canvas>
@@ -127,7 +127,7 @@
                 });
                 {% endif -%}
 
-                {% if data.upgradeStatus -%}
+                {% if data.upgradeStatus is defined -%}
                 var upgradeStatusData = {
                     datasets: [{
                         data: [{% for version, count in data.upgradeStatus %}"{{ count }}"{% if not loop.last %},{% endif %}{% endfor %}],
@@ -145,7 +145,7 @@
                 });
                 {% endif -%}
 
-                {% if data.errorCode -%}
+                {% if data.errorCode is defined -%}
                 var errorCodeData = {
                     datasets: [{
                         data: [{% for version, count in data.errorCode %}"{{ count }}"{% if not loop.last %},{% endif %}{% endfor %}],
