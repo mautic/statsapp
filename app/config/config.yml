@@ -69,6 +69,8 @@ fos_rest:
             - { path: '^/phpVersion', priorities: ['json'], prefer_extension: false }
             - { path: '^/serverOs', priorities: ['json'], prefer_extension: false }
             - { path: '^/version', priorities: ['json'], prefer_extension: false }
+            - { path: '^/m3upgradejson', priorities: ['json'], prefer_extension: false }
+            - { path: '^/m3upgrade', priorities: ['html'], prefer_extension: false }
             - { path: '^/', methods: ['POST'], priorities: ['json'], prefer_extension: false }
             - { path: '^/send', methods: ['POST'], priorities: ['json'], prefer_extension: false }
             - { path: '^/', methods: ['GET'], priorities: ['html'], prefer_extension: false }

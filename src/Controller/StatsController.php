@@ -38,13 +38,27 @@ class StatsController extends FOSRestController
     }
 
     /**
+     * Retrieves Mautic 3 upgrade data in JSON format.
+     * 
+     * @param Request $request
+     * 
+     * @return Response
+     * 
+     * @Get("/m3upgradejson")
+     */
+    public function getM3UpgradeDataJsonAction(Request $request)
+    {
+        return $this->getM3UpgradeDataAction($request);
+    }
+
+    /**
      * Retrieves Mautic 3 upgrade data
      * 
      * @param Request $request
      * 
      * @return Response
      * 
-     * @Get("/m3upgrade", defaults={"source": "all"})
+     * @Get("/m3upgrade")
      */
     public function getM3UpgradeDataAction(Request $request)
     {
@@ -85,7 +99,7 @@ class StatsController extends FOSRestController
         if ($data instanceof Response) {
             return $data;
         }
-
+        
         if ($source === 'downloads' && isset($data['message'])) {
             $view = $this->view($data, 500);
 

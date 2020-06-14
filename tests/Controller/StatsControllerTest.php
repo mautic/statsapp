@@ -63,6 +63,24 @@ class StatsController extends WebTestCase
         $this->assertArrayHasKey('phpVersion', $response);
     }
 
+    public function testGetM3UpgradeDataActionDefaultBehavior()
+    {
+        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadM3UpgradeStatsData'];
+        $this->loadFixtures($fixtures);
+
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/m3upgradejson');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
+
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('phpVersion', $response);
+        $this->assertArrayHasKey('upgradeStatus', $response);
+        $this->assertArrayHasKey('errorCode', $response);
+    }
+
     public function testGetDataActionSingleSource()
     {
         $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
@@ -224,5 +242,18 @@ class StatsController extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertTrue($crawler->filter('html:contains("Application Statistics")')->count() > 0);
+    }
+
+    public function testViewM3UpgradeAction()
+    {
+        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadM3UpgradeStatsData'];
+        $this->loadFixtures($fixtures);
+
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/m3upgrade');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($crawler->filter('html:contains("Mautic 3 upgrade Statistics")')->count() > 0);
     }
 }
