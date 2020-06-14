@@ -39,42 +39,42 @@ class Mautic3UpgradeStats
     /**
      * @var string
      *
-     * @ORM\Column(name="application", type="text")
+     * @ORM\Column(name="application", type="string")
      */
     private $application;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="version", type="text")
+     * @ORM\Column(name="version", type="string")
      */
     private $version;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="php_version", type="text", nullable=true)
+     * @ORM\Column(name="php_version", type="string", nullable=true)
      */
     private $phpVersion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="db_driver", type="text", nullable=true)
+     * @ORM\Column(name="db_driver", type="string", nullable=true)
      */
     private $dbDriver;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="db_version", type="text", nullable=true)
+     * @ORM\Column(name="db_version", type="string", nullable=true)
      */
     private $dbVersion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="server_os", type="text", nullable=true)
+     * @ORM\Column(name="server_os", type="string", nullable=true)
      */
     private $serverOs;
 
@@ -88,14 +88,14 @@ class Mautic3UpgradeStats
     /**
      * @var string
      *
-     * @ORM\Column(name="upgrade_status", type="text", nullable=true)
+     * @ORM\Column(name="upgrade_status", type="string", nullable=true)
      */
     private $upgradeStatus;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="error_code", type="text", nullable=true)
+     * @ORM\Column(name="error_code", type="string", nullable=true)
      */
     private $errorCode;
 

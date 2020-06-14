@@ -38,6 +38,36 @@ class StatsController extends FOSRestController
     }
 
     /**
+     * Retrieves Mautic 3 upgrade data
+     * 
+     * @param Request $request
+     * 
+     * @return Response
+     * 
+     * @Get("/m3upgrade", defaults={"source": "all"})
+     */
+    public function getM3UpgradeDataAction(Request $request)
+    {
+        $data = $this->fetchM3UpgradeData($request);
+
+        // The downloads source may send back a message for an error condition instead of data so check for this
+        if ($data instanceof Response) {
+            return $data;
+        }
+
+        $view = $this->view($data, 200)
+            ->setTemplate('MauticStatsBundle:Stats:m3upgrade.html.twig')
+            ->setTemplateData(
+                [
+                    'application' => 'Mautic',
+                    'data' => $data
+                ]
+            );
+
+        return $this->handleView($view);
+    }
+
+    /**
      * Retrieves the stat data as a JSON string
      *
      * @param Request $request
@@ -174,6 +204,8 @@ class StatsController extends FOSRestController
             'upgradeStatus' => $request->request->get('upgradeStatus', null), // possible values started, failed, succeeded
             'errorCode' => $request->request->get('errorCode', null),
         ];
+
+        $postData['phpVersion'] = str_replace("\n", "", $postData['phpVersion']);
 
         // Check for null values on the app, version, and instance; everything else we can do without
         if ($postData['application'] === null || $postData['version'] === null || $postData['instanceId'] === null || $postData['upgradeStatus'] === null) {
@@ -395,6 +427,168 @@ class StatsController extends FOSRestController
                 'total' => $total
             ];
         }
+
+        return $data;
+    }
+
+    /**
+     * Fetches data from the Mautic 3 upgrade data.
+     *
+     * @param Request $request
+     *
+     * @return array
+     * @throws NotFoundHttpException
+     */
+    private function fetchM3UpgradeData(Request $request)
+    {
+        /** @var \Mautic\StatsBundle\Entity\Mautic3UpgradeStatsRepository $repo */
+        $repo = $this->getDoctrine()
+            ->getRepository('MauticStatsBundle:Mautic3UpgradeStats');
+        $appData = $repo->getAppData('Mautic');
+
+        if (empty($appData)) {
+            throw $this->createNotFoundException(
+                $this->get('translator')->trans('No data was found for the %app% application', ['%app%' => 'Mautic'])
+            );
+        }
+
+        $chartData = [
+            'phpVersion' => [],
+            'dbDriver' => [],
+            'dbVersion' => [],
+            'version' => [],
+            'serverOs' => [],
+            'upgradeStatus' => [],
+            'errorCode' => []
+        ];
+
+        foreach ($appData as $item) {
+            foreach ($chartData as $key => $value) {
+                if (!is_null($item[$key])) {
+                    if (!isset($chartData[$key][$item[$key]])) {
+                        $chartData[$key][$item[$key]] = 0;
+                    }
+
+                    $chartData[$key][$item[$key]]++;
+                }
+            }
+        }
+
+        $data = [];
+
+        foreach ($chartData as $key => $value) {
+            foreach ($value as $name => $count) {
+                if ($name) {
+                    $data[$key][] = [
+                        'name' => $name,
+                        'count' => $count
+                    ];
+                }
+            }
+        }
+
+        // Filter our data into percentages unless authorized to receive raw data
+        $authorizedRaw = $request->headers->has('Mautic-Raw') && $request->headers->get(
+                'Mautic-Raw',
+                'fail'
+            ) === $this->getParameter('mautic_raw_header');
+        $total = count($appData);
+
+        if (!$authorizedRaw) {
+            foreach ($data as $key => $dataGroup) {
+                switch ($key) {
+                    case 'phpVersion':
+                        // We're going to group by minor version branch here and convert to a percentage
+                        $counts = [];
+
+                        foreach ($dataGroup as $row) {
+                            $version = substr($row['name'], 0, 3);
+
+                            // If the container does not exist, add it
+                            if (!isset($counts[$version])) {
+                                $counts[$version] = 0;
+                            }
+
+                            $counts[$version] += $row['count'];
+                        }
+
+                        $sanitizedData = [];
+
+                        foreach ($counts as $version => $count) {
+                            $sanitizedData[$version] = round($count / $total, 4) * 100;
+                        }
+
+                        ksort($sanitizedData);
+
+                        $data[$key] = $sanitizedData;
+
+                        break;
+
+                    case 'serverOs':
+                        // We're going to group by operating system here
+                        $counts = [];
+
+                        foreach ($dataGroup as $row) {
+                            $fullOs = explode(' ', $row['name']);
+                            $os = $fullOs[0];
+
+                            if (!$os) {
+                                $os = 'unknown';
+                            }
+
+                            // If the container does not exist, add it
+                            if (!isset($counts[$os])) {
+                                $counts[$os] = 0;
+                            }
+
+                            $counts[$os] += $row['count'];
+                        }
+
+                        $sanitizedData = [];
+
+                        foreach ($counts as $os => $count) {
+                            $sanitizedData[$os] = round($count / $total, 4) * 100;
+                        }
+
+                        ksort($sanitizedData);
+
+                        $data[$key] = $sanitizedData;
+
+                        break;
+
+                    case 'dbDriver':
+                    case 'version':
+                        // For now, group by the object name and figure out the percentages
+                        $sanitizedData = [];
+
+                        foreach ($dataGroup as $row) {
+                            $sanitizedData[$row['name']] = round($row['count'] / $total, 4) * 100;
+                        }
+
+                        ksort($sanitizedData);
+
+                        $data[$key] = $sanitizedData;
+
+                        break;
+
+                    default:
+                        // For now, group by the object name and figure out the percentages
+                        $sanitizedData = [];
+
+                        foreach ($dataGroup as $row) {
+                            $sanitizedData[$row['name']] = round($row['count'] / $total, 4) * 100;
+                        }
+
+                        ksort($sanitizedData);
+
+                        $data[$key] = $sanitizedData;
+
+                        break;
+                }
+            }
+        }
+
+        $data['total'] = $total;
 
         return $data;
     }
