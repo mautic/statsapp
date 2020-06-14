@@ -7,7 +7,7 @@ parameters:
     database_user:
     database_password:
     locale: en
-    secret:
+    secret: testing
     debug_toolbar:
     debug_redirects:
     joomla_dbname:
