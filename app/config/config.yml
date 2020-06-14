@@ -65,7 +65,6 @@ fos_rest:
             - { path: '^/dbVersion', priorities: ['json'], prefer_extension: false }
             - { path: '^/downloads', priorities: ['json'], prefer_extension: false }
             - { path: '^/installSource', priorities: ['json'], prefer_extension: false }
-            - { path: '^/upgradeStatus', priorities: ['json'], prefer_extension: false }
             - { path: '^/phpVersion', priorities: ['json'], prefer_extension: false }
             - { path: '^/serverOs', priorities: ['json'], prefer_extension: false }
             - { path: '^/version', priorities: ['json'], prefer_extension: false }
