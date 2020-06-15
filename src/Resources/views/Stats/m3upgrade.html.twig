@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block pagetitle %}{{ 'Application Statistics'|trans }}{% endblock %}
+{% block pagetitle %}{{ 'Mautic 3 upgrade Statistics'|trans }}{% endblock %}
 
 {% block content %}
                             {%- if data|length %}
@@ -8,7 +8,7 @@
                                 <div class="row">
                                     {% if data.version -%}
                                     <div class="col-12 col-md-6 col-xl-3 mb-4" style="text-align: center">
-                                        <h3>{{ 'Installed Versions'|trans }}</h3>
+                                        <h3>{{ 'Source Versions'|trans }}</h3>
                                         <canvas id="mauticChartVersion" width="200" height="200"></canvas>
                                     </div>
                                     {% endif -%}
@@ -30,7 +30,18 @@
                                         <canvas id="mauticChartServer" width="200" height="200"></canvas>
                                     </div>
                                     {%- endif %}
-
+                                    {% if data.upgradeStatus is defined -%}
+                                    <div class="col-12 col-md-6 col-xl-3 mb-4" style="text-align: center">
+                                        <h3>{{ 'Upgrade status'|trans }}</h3>
+                                        <canvas id="mauticChartUpgradeStatus" width="200" height="200"></canvas>
+                                    </div>
+                                    {%- endif %}
+                                    {% if data.errorCode is defined -%}
+                                    <div class="col-12 col-md-6 col-xl-3 mb-4" style="text-align: center">
+                                        <h3>{{ 'Error code (if any)'|trans }}</h3>
+                                        <canvas id="mauticChartErrorCode" width="200" height="200"></canvas>
+                                    </div>
+                                    {%- endif %}
                                 </div>
                             {% else -%}
                             <div class="alert alert-info">{{ 'No statistics for Mautic are available'|trans }}</div>
@@ -113,6 +124,42 @@
                 var serverChart = new Chart(ctxServer, {
                     type: 'doughnut',
                     data: serverData
+                });
+                {% endif -%}
+
+                {% if data.upgradeStatus is defined -%}
+                var upgradeStatusData = {
+                    datasets: [{
+                        data: [{% for version, count in data.upgradeStatus %}"{{ count }}"{% if not loop.last %},{% endif %}{% endfor %}],
+                        backgroundColor: [{% for version, count in data.upgradeStatus %}"{{ chart_color() }}"{% if not loop.last %},{% endif %}{% endfor %}]
+                    }],
+                    labels: [{% for version, count in data.upgradeStatus %}"{{ version }}"{% if not loop.last %},{% endif %}{% endfor %}],
+                    options: {
+                        responsive: true
+                    }
+                };
+                var ctxUpgradeStatus = document.getElementById('mauticChartUpgradeStatus').getContext('2d');
+                var upgradeStatusChart = new Chart(ctxUpgradeStatus, {
+                    type: 'doughnut',
+                    data: upgradeStatusData
+                });
+                {% endif -%}
+
+                {% if data.errorCode is defined -%}
+                var errorCodeData = {
+                    datasets: [{
+                        data: [{% for version, count in data.errorCode %}"{{ count }}"{% if not loop.last %},{% endif %}{% endfor %}],
+                        backgroundColor: [{% for version, count in data.errorCode %}"{{ chart_color() }}"{% if not loop.last %},{% endif %}{% endfor %}]
+                    }],
+                    labels: [{% for version, count in data.errorCode %}"{{ version }}"{% if not loop.last %},{% endif %}{% endfor %}],
+                    options: {
+                        responsive: true
+                    }
+                };
+                var ctxErrorCode = document.getElementById('mauticChartErrorCode').getContext('2d');
+                var upgradeStatusChart = new Chart(ctxErrorCode, {
+                    type: 'doughnut',
+                    data: errorCodeData
                 });
                 {% endif -%}
             });

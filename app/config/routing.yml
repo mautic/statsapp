@@ -12,3 +12,9 @@ mautic_stats_post:
     path:     /send
     defaults: { _controller: MauticStatsBundle:Stats:postData }
     methods:  [POST]
+
+# For collecting stats about M2 to M3 upgrade
+mautic_3_upgrade_stats_post:
+    path:     /mautic3upgrade/send
+    defaults: { _controller: MauticStatsBundle:Stats:postMautic3UpgradeData }
+    methods:  [POST]
