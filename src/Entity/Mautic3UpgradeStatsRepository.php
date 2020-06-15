@@ -11,9 +11,6 @@ namespace Mautic\StatsBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-/**
- * Class StatsRepository
- */
 class Mautic3UpgradeStatsRepository extends EntityRepository
 {
     /**
