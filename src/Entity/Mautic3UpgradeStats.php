@@ -176,7 +176,7 @@ class Mautic3UpgradeStats
      */
     public function setVersion($version)
     {
-        $this->version = $version;
+        $this->version = trim($version);
 
         return $this;
     }
@@ -188,7 +188,7 @@ class Mautic3UpgradeStats
      */
     public function getVersion()
     {
-        return $this->version;
+        return trim($this->version);
     }
 
     /**
