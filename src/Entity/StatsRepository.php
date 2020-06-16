@@ -22,8 +22,11 @@ class StatsRepository extends EntityRepository
      */
     public function getAppData($application)
     {
+        $thisYear = date_create('-1 year');
         $query = $this->createQueryBuilder('s');
         $query->where($query->expr()->eq('s.application', ':application'))
+            ->andWhere($query->expr()->gte('s.lastUpdated', ':lastYear'))
+            ->setParameter('lastYear', date_format($thisYear, 'Y-m-d'))
             ->setParameter('application', $application);
 
         return $query->getQuery()->getArrayResult();

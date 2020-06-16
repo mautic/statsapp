@@ -169,7 +169,7 @@ class Stats
      */
     public function setVersion($version)
     {
-        $this->version = $version;
+        $this->version = trim($version);
 
         return $this;
     }
@@ -181,7 +181,7 @@ class Stats
      */
     public function getVersion()
     {
-        return $this->version;
+        return trim($this->version);
     }
 
     /**

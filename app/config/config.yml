@@ -78,7 +78,7 @@ parameters:
 
 # Ekino New Relic Bundle
 ekino_new_relic:
-    enabled: true
+    enabled: false
     application_name: Mautic Statistics Application
 
 # BabDev Mautic Bundle
