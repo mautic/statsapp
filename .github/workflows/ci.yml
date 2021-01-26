@@ -37,8 +37,10 @@ jobs:
     - name: Set SYMFONY_ENV to test
       run: echo "SYMFONY_ENV=test" >> $GITHUB_ENV
 
-    - name: Run tests
+    - name: Install dependencies
       run: |
         cp app/config/parameters.yml.dist app/config/parameters.yml
         composer install --no-progress
-        vendor/bin/phpunit
+
+    - name: Run tests
+      run: vendor/bin/phpunit
