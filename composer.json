@@ -38,8 +38,7 @@
         "jms/serializer-bundle": "~1.1",
         "sensio/distribution-bundle": "~5.0",
         "sensio/framework-extra-bundle": "~3.0",
-        "twig/extensions": "~1.0",
-        "twig/twig": "~1.23",
+        "twig/twig": "^2",
         "symfony/templating": "3.4.*",
         "symfony/asset": "3.4.*"
     },
