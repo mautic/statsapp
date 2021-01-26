@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Stats Gathering Application
  *
@@ -9,7 +12,7 @@
 namespace Mautic\StatsBundle\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Mautic\StatsBundle\Entity\Stats;
 
 /**
