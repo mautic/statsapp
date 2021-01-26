@@ -1,0 +1,44 @@
+name: Statsapp tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    strategy:
+        matrix:
+          php-versions: ['7.2', '7.3', '7.4']
+  
+    name: PHPUnit PHP ${{ matrix.php-versions }}
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: mautictest
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP, with composer and extensions
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql, pdo_mysql
+        coverage: pcov
+
+    - name: Set SYMFONY_ENV to test
+      run: echo "SYMFONY_ENV=test" >> $GITHUB_ENV
+
+    - name: Run tests
+      run: |
+        cp app/config/parameters.yml.dist app/config/parameters.yml
+        composer install --no-progress
+        vendor/bin/phpunit
