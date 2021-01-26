@@ -9,18 +9,21 @@
 namespace Mautic\StatsBundle\Tests\Controller;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 
 /**
  * Test class for \Mautic\StatsBundle\Controller\StatsController
  */
 class StatsController extends WebTestCase
 {
+    use FixturesTrait;
+
     public function testLegacyGetDataActionDefaultBehavior()
     {
-        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
-        $this->loadFixtures($fixtures);
-
         $client = static::createClient();
+
+        $fixtures = ['Mautic\StatsBundle\DataFixtures\ORM\LoadStatsData'];
+        $this->loadFixtures($fixtures);
 
         $crawler = $client->request('GET', '/data');
 
@@ -33,10 +36,10 @@ class StatsController extends WebTestCase
 
     public function testLegacyGetDataActionSingleSource()
     {
-        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
-        $this->loadFixtures($fixtures);
-
         $client = static::createClient();
+
+        $fixtures = ['Mautic\StatsBundle\DataFixtures\ORM\LoadStatsData'];
+        $this->loadFixtures($fixtures);
 
         $crawler = $client->request('GET', '/data?source=phpVersion');
 
@@ -49,10 +52,10 @@ class StatsController extends WebTestCase
 
     public function testGetDataActionDefaultBehavior()
     {
-        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
-        $this->loadFixtures($fixtures);
-
         $client = static::createClient();
+
+        $fixtures = ['Mautic\StatsBundle\DataFixtures\ORM\LoadStatsData'];
+        $this->loadFixtures($fixtures);
 
         $crawler = $client->request('GET', '/all');
 
@@ -65,10 +68,10 @@ class StatsController extends WebTestCase
 
     public function testGetM3UpgradeDataActionDefaultBehavior()
     {
-        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadM3UpgradeStatsData'];
-        $this->loadFixtures($fixtures);
-
         $client = static::createClient();
+
+        $fixtures = ['Mautic\StatsBundle\DataFixtures\ORM\LoadM3UpgradeStatsData'];
+        $this->loadFixtures($fixtures);
 
         $crawler = $client->request('GET', '/m3upgradejson');
 
@@ -83,10 +86,10 @@ class StatsController extends WebTestCase
 
     public function testGetDataActionSingleSource()
     {
-        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
-        $this->loadFixtures($fixtures);
-
         $client = static::createClient();
+
+        $fixtures = ['Mautic\StatsBundle\DataFixtures\ORM\LoadStatsData'];
+        $this->loadFixtures($fixtures);
 
         $crawler = $client->request('GET', '/phpVersion');
 
@@ -99,10 +102,10 @@ class StatsController extends WebTestCase
 
     public function testGetDataActionSingleSourceWithAuthorizationHeader()
     {
-        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
-        $this->loadFixtures($fixtures);
-
         $client = static::createClient();
+
+        $fixtures = ['Mautic\StatsBundle\DataFixtures\ORM\LoadStatsData'];
+        $this->loadFixtures($fixtures);
 
         $crawler = $client->request('GET', '/phpVersion', [], [], ['HTTP_MAUTIC_RAW' => $this->getContainer()->getParameter('mautic_raw_header')]);
 
@@ -259,10 +262,10 @@ class StatsController extends WebTestCase
 
     public function testViewAction()
     {
-        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadStatsData'];
-        $this->loadFixtures($fixtures);
-
         $client = static::createClient();
+
+        $fixtures = ['Mautic\StatsBundle\DataFixtures\ORM\LoadStatsData'];
+        $this->loadFixtures($fixtures);
 
         $crawler = $client->request('GET', '/');
 
@@ -272,10 +275,10 @@ class StatsController extends WebTestCase
 
     public function testViewM3UpgradeAction()
     {
-        $fixtures = ['Mautic\StatsBundle\Tests\Fixtures\LoadM3UpgradeStatsData'];
-        $this->loadFixtures($fixtures);
-
         $client = static::createClient();
+
+        $fixtures = ['Mautic\StatsBundle\DataFixtures\ORM\LoadM3UpgradeStatsData'];
+        $this->loadFixtures($fixtures);
 
         $crawler = $client->request('GET', '/m3upgrade');
 

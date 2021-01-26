@@ -4,7 +4,8 @@ imports:
 framework:
     test: ~
     session:
-        storage_id: session.storage.filesystem
+        storage_id: session.storage.mock_file
+        name: MOCKSESSION
     profiler:
         collect: false
     validation: { enable_annotations: true }
@@ -13,8 +14,9 @@ web_profiler:
     toolbar: false
     intercept_redirects: false
 
-liip_functional_test:
-    cache_sqlite_db: true
+liip_test_fixtures:
+    cache_db:
+        sqlite: liip_test_fixtures.services_database_backup.sqlite
 
 doctrine:
     dbal:
