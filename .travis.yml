@@ -30,4 +30,5 @@ install:
 
 # Run script
 script:
+  - vendor/bin/phpstan analyse src tests --level 1
   - vendor/bin/phpunit

@@ -8,10 +8,13 @@
 
 namespace Mautic\StatsBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+
 /**
  * Class StatsExtension
  */
-class StatsExtension extends \Twig_Extension
+class StatsExtension extends AbstractExtension
 {
     /**
      * Array containing the colors to use in charts
@@ -40,12 +43,12 @@ class StatsExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      *
-     * @return \Twig_SimpleFunction[] An array of functions
+     * @return TwigFunction[] An array of functions
      */
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('chart_color', [$this, 'getChartColor']),
+            new TwigFunction('chart_color', [$this, 'getChartColor']),
         ];
     }
 
@@ -66,6 +69,8 @@ class StatsExtension extends \Twig_Extension
      */
     public function getChartColor()
     {
+        $color = '';
+
         // First, check if all the colors have been used
         if (count($this->colors) === count($this->usedColors)) {
             $this->usedColors = [];

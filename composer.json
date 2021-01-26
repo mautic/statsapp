@@ -30,6 +30,7 @@
         "symfony/translation": "3.4.*",
         "symfony/twig-bridge": "3.4.*",
         "symfony/twig-bundle": "3.4.*",
+        "symfony/routing": "3.4.*",
         "symfony/yaml": "3.4.*",
         "doctrine/orm": "^2.5.2",
         "doctrine/doctrine-bundle": "^1.10",
@@ -53,7 +54,8 @@
         "symfony/stopwatch": "3.4.*",
         "phpunit/phpunit": "^8",
         "liip/functional-test-bundle": "^4.2",
-        "liip/test-fixtures-bundle": "^1.11"
+        "liip/test-fixtures-bundle": "^1.11",
+        "phpstan/phpstan": "^0.12.69"
     },
     "scripts": {
         "post-install-cmd": [
