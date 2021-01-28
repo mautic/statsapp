@@ -12,3 +12,7 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+
+    Mautic\StatsBundle\DataFixtures\ORM\:
+        resource: '../../DataFixtures/ORM/*'
+        tags: ['doctrine.fixture.orm']

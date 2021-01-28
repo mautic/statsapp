@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Stats Gathering Application
  *
@@ -6,16 +9,16 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License Version 3
  */
 
-namespace Mautic\StatsBundle\Tests\Fixtures;
+namespace Mautic\StatsBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Mautic\StatsBundle\Entity\Mautic3UpgradeStats;
 
 /**
  * Class LoadM3UpgradeStatsData
  */
-class LoadM3UpgradeStatsData implements FixtureInterface
+class LoadM3UpgradeStatsData extends Fixture
 {
     /**
      * {@inheritdoc}

@@ -41,6 +41,7 @@ class AppKernel extends Kernel
         // Bundles only loaded in test env
         if ($this->getEnvironment() === 'test') {
             $bundles[] = new Liip\FunctionalTestBundle\LiipFunctionalTestBundle();
+            $bundles[] = new Liip\TestFixturesBundle\LiipTestFixturesBundle();
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
