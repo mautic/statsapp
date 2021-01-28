@@ -1,0 +1,36 @@
+name: Statsapp tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    strategy:
+        matrix:
+          php-versions: ['7.2']
+  
+    name: PHPUnit PHP ${{ matrix.php-versions }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP, with composer and extensions
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql, pdo_mysql
+        coverage: pcov
+
+    - name: Set SYMFONY_ENV to test
+      run: echo "SYMFONY_ENV=test" >> $GITHUB_ENV
+
+    - name: Install dependencies
+      run: |
+        cp app/config/parameters.yml.dist app/config/parameters.yml
+        composer install --no-progress
+
+    - name: Run tests
+      run: vendor/bin/phpunit
